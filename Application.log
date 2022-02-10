@@ -1,0 +1,522 @@
+2020-02-28 09:57:23,058 DEBUG main com.cso.MainConverter - START closeLog METHOD.
+2020-02-28 09:57:23,058 DEBUG main com.cso.MainConverter - END closeLog METHOD.
+2020-02-28 09:57:23,058 DEBUG main com.cso.MainConverter - END main METHOD.
+2020-02-28 09:57:23,371 DEBUG main com.cso.MainConverter - START main METHOD.
+2020-02-28 09:57:23,386 DEBUG main com.cso.MainConverter - START openLog METHOD.
+2020-02-28 09:57:23,386 DEBUG main com.cso.MainConverter - END openLog METHOD.
+2020-02-28 09:57:23,386 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 09:57:23,386 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 09:57:23,386 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 09:57:23,386 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 09:57:23,402 DEBUG main com.cso.EncryptDecryptFiles - Entered EncryptDecrypt constructor.
+2020-02-28 09:57:23,761 DEBUG main com.cso.EncryptDecryptFiles - Exited EncryptDecrypt constructor.
+2020-02-28 09:57:23,761 DEBUG main com.cso.EncryptDecryptFiles - Entered method encrypt with parameter filename C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-02-28 09:57:23,761 DEBUG main com.cso.EncryptDecryptFiles - Encrypt file: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-02-28 09:57:23,761 DEBUG main com.cso.EncryptDecryptFiles - Entered method encryptFile.
+2020-02-28 09:57:24,261 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 09:57:24,261 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 09:57:24,261 DEBUG main com.cso.EncryptDecryptFiles - Encryption complete, encrypted file: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zipenc
+2020-02-28 09:57:24,261 DEBUG main com.cso.EncryptDecryptFiles - Exited method encryptFile.
+2020-02-28 09:57:24,261 DEBUG main com.cso.EncryptDecryptFiles - Exited method encrypt.
+2020-02-28 09:57:24,261 DEBUG main com.cso.MainConverter - Encryption Completed.
+2020-02-28 09:57:24,261 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 09:57:24,261 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 09:57:24,261 DEBUG main com.cso.MainConverter - START closeLog METHOD.
+2020-02-28 09:57:24,261 DEBUG main com.cso.MainConverter - END closeLog METHOD.
+2020-02-28 09:57:24,261 DEBUG main com.cso.MainConverter - END main METHOD.
+2020-02-28 09:57:59,188 DEBUG main com.cso.MainConverter - START main METHOD.
+2020-02-28 09:57:59,203 DEBUG main com.cso.MainConverter - START openLog METHOD.
+2020-02-28 09:57:59,203 DEBUG main com.cso.MainConverter - END openLog METHOD.
+2020-02-28 09:57:59,203 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 09:57:59,203 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 09:57:59,203 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 09:57:59,203 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 09:57:59,203 DEBUG main com.cso.ZipFiles - START createZip METHOD with input file parameters: Source file/folder: C:\CSO\PIAAC\Pilot\DataTransfer\prep, Destination file/folder: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-02-28 09:57:59,203 DEBUG main com.cso.ZipFiles - Zip folder C:\CSO\PIAAC\Pilot\DataTransfer\prep
+2020-02-28 09:57:59,203 DEBUG main com.cso.ZipFiles - START addFolderToZip METHOD.
+2020-02-28 09:57:59,203 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 09:57:59,203 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 09:57:59,203 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 09:57:59,203 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 09:57:59,203 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 09:57:59,203 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 09:57:59,203 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 09:57:59,203 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 09:57:59,203 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 09:57:59,203 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 09:57:59,203 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 09:57:59,203 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 09:57:59,203 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.ZipFiles - END addFolderToZip METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.ZipFiles - END createZip METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.MainConverter - Zip Completed.
+2020-02-28 09:57:59,219 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.MainConverter - START closeLog METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.MainConverter - END closeLog METHOD.
+2020-02-28 09:57:59,219 DEBUG main com.cso.MainConverter - END main METHOD.
+2020-02-28 09:57:59,438 DEBUG main com.cso.MainConverter - START main METHOD.
+2020-02-28 09:57:59,438 DEBUG main com.cso.MainConverter - START openLog METHOD.
+2020-02-28 09:57:59,438 DEBUG main com.cso.MainConverter - END openLog METHOD.
+2020-02-28 09:57:59,453 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 09:57:59,453 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 09:57:59,453 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 09:57:59,453 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 09:57:59,453 DEBUG main com.cso.EncryptDecryptFiles - Entered EncryptDecrypt constructor.
+2020-02-28 09:57:59,578 DEBUG main com.cso.EncryptDecryptFiles - Exited EncryptDecrypt constructor.
+2020-02-28 09:57:59,578 DEBUG main com.cso.EncryptDecryptFiles - Entered method encrypt with parameter filename C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-02-28 09:57:59,578 DEBUG main com.cso.EncryptDecryptFiles - Encrypt file: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-02-28 09:57:59,578 DEBUG main com.cso.EncryptDecryptFiles - Entered method encryptFile.
+2020-02-28 09:58:00,078 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 09:58:00,078 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 09:58:00,078 DEBUG main com.cso.EncryptDecryptFiles - Encryption complete, encrypted file: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zipenc
+2020-02-28 09:58:00,078 DEBUG main com.cso.EncryptDecryptFiles - Exited method encryptFile.
+2020-02-28 09:58:00,078 DEBUG main com.cso.EncryptDecryptFiles - Exited method encrypt.
+2020-02-28 09:58:00,078 DEBUG main com.cso.MainConverter - Encryption Completed.
+2020-02-28 09:58:00,078 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 09:58:00,078 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 09:58:00,078 DEBUG main com.cso.MainConverter - START closeLog METHOD.
+2020-02-28 09:58:00,078 DEBUG main com.cso.MainConverter - END closeLog METHOD.
+2020-02-28 09:58:00,078 DEBUG main com.cso.MainConverter - END main METHOD.
+2020-02-28 10:03:36,407 DEBUG main com.cso.MainConverter - START main METHOD.
+2020-02-28 10:03:36,407 DEBUG main com.cso.MainConverter - START openLog METHOD.
+2020-02-28 10:03:36,407 DEBUG main com.cso.MainConverter - END openLog METHOD.
+2020-02-28 10:03:36,407 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:03:36,407 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:03:36,407 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:03:36,407 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:03:36,407 DEBUG main com.cso.ZipFiles - START createZip METHOD with input file parameters: Source file/folder: C:\CSO\PIAAC\Pilot\DataTransfer\prep, Destination file/folder: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-02-28 10:03:36,407 DEBUG main com.cso.ZipFiles - Zip folder C:\CSO\PIAAC\Pilot\DataTransfer\prep
+2020-02-28 10:03:36,407 DEBUG main com.cso.ZipFiles - START addFolderToZip METHOD.
+2020-02-28 10:03:36,407 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:03:36,422 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:03:36,422 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:03:36,422 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:03:36,422 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:03:36,422 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:03:36,422 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:03:36,422 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:03:36,422 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:03:36,422 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:03:36,422 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:03:36,422 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:03:36,422 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:03:36,422 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:03:36,422 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:03:36,422 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:03:36,422 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:03:36,422 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:03:36,422 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:03:36,422 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:03:36,422 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:03:36,422 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:03:36,422 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:03:36,422 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:03:36,422 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:03:36,422 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:03:36,422 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:03:36,422 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:03:36,422 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:03:36,438 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:03:36,438 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:03:36,438 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:03:36,438 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:03:36,438 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:03:36,438 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:03:36,438 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:03:36,438 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:03:36,438 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:03:36,438 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:03:36,438 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:03:36,438 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:03:36,438 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:03:36,438 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:03:36,438 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:03:36,438 DEBUG main com.cso.ZipFiles - END addFolderToZip METHOD.
+2020-02-28 10:03:36,438 DEBUG main com.cso.ZipFiles - END createZip METHOD.
+2020-02-28 10:03:36,438 DEBUG main com.cso.MainConverter - Zip Completed.
+2020-02-28 10:03:36,438 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:03:36,438 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:03:36,438 DEBUG main com.cso.MainConverter - START closeLog METHOD.
+2020-02-28 10:03:36,438 DEBUG main com.cso.MainConverter - END closeLog METHOD.
+2020-02-28 10:03:36,438 DEBUG main com.cso.MainConverter - END main METHOD.
+2020-02-28 10:03:36,672 DEBUG main com.cso.MainConverter - START main METHOD.
+2020-02-28 10:03:36,672 DEBUG main com.cso.MainConverter - START openLog METHOD.
+2020-02-28 10:03:36,688 DEBUG main com.cso.MainConverter - END openLog METHOD.
+2020-02-28 10:03:36,688 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:03:36,688 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:03:36,688 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:03:36,688 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:03:36,688 DEBUG main com.cso.EncryptDecryptFiles - Entered EncryptDecrypt constructor.
+2020-02-28 10:03:36,813 DEBUG main com.cso.EncryptDecryptFiles - Exited EncryptDecrypt constructor.
+2020-02-28 10:03:36,813 DEBUG main com.cso.EncryptDecryptFiles - Entered method encrypt with parameter filename C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-02-28 10:03:36,813 DEBUG main com.cso.EncryptDecryptFiles - Encrypt file: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-02-28 10:03:36,813 DEBUG main com.cso.EncryptDecryptFiles - Entered method encryptFile.
+2020-02-28 10:03:37,313 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:03:37,313 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:03:37,313 DEBUG main com.cso.EncryptDecryptFiles - Encryption complete, encrypted file: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zipenc
+2020-02-28 10:03:37,313 DEBUG main com.cso.EncryptDecryptFiles - Exited method encryptFile.
+2020-02-28 10:03:37,313 DEBUG main com.cso.EncryptDecryptFiles - Exited method encrypt.
+2020-02-28 10:03:37,313 DEBUG main com.cso.MainConverter - Encryption Completed.
+2020-02-28 10:03:37,313 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:03:37,313 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:03:37,313 DEBUG main com.cso.MainConverter - START closeLog METHOD.
+2020-02-28 10:03:37,313 DEBUG main com.cso.MainConverter - END closeLog METHOD.
+2020-02-28 10:03:37,313 DEBUG main com.cso.MainConverter - END main METHOD.
+2020-02-28 10:06:58,008 DEBUG main com.cso.MainConverter - START main METHOD.
+2020-02-28 10:06:58,008 DEBUG main com.cso.MainConverter - START openLog METHOD.
+2020-02-28 10:06:58,008 DEBUG main com.cso.MainConverter - END openLog METHOD.
+2020-02-28 10:06:58,008 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:06:58,008 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:06:58,008 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:06:58,008 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:06:58,008 DEBUG main com.cso.ZipFiles - START createZip METHOD with input file parameters: Source file/folder: C:\CSO\PIAAC\Pilot\DataTransfer\prep, Destination file/folder: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-02-28 10:06:58,008 DEBUG main com.cso.ZipFiles - Zip folder C:\CSO\PIAAC\Pilot\DataTransfer\prep
+2020-02-28 10:06:58,008 DEBUG main com.cso.ZipFiles - START addFolderToZip METHOD.
+2020-02-28 10:06:58,008 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:06:58,008 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:06:58,008 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:06:58,008 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:06:58,008 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:06:58,008 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:06:58,008 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:06:58,008 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:06:58,008 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:06:58,008 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.ZipFiles - END addFolderToZip METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.ZipFiles - END createZip METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.MainConverter - Zip Completed.
+2020-02-28 10:06:58,024 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.MainConverter - START closeLog METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.MainConverter - END closeLog METHOD.
+2020-02-28 10:06:58,024 DEBUG main com.cso.MainConverter - END main METHOD.
+2020-02-28 10:06:58,243 DEBUG main com.cso.MainConverter - START main METHOD.
+2020-02-28 10:06:58,243 DEBUG main com.cso.MainConverter - START openLog METHOD.
+2020-02-28 10:06:58,258 DEBUG main com.cso.MainConverter - END openLog METHOD.
+2020-02-28 10:06:58,258 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:06:58,258 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:06:58,258 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:06:58,258 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:06:58,258 DEBUG main com.cso.EncryptDecryptFiles - Entered EncryptDecrypt constructor.
+2020-02-28 10:06:58,493 DEBUG main com.cso.EncryptDecryptFiles - Exited EncryptDecrypt constructor.
+2020-02-28 10:06:58,493 DEBUG main com.cso.EncryptDecryptFiles - Entered method encrypt with parameter filename C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-02-28 10:06:58,493 DEBUG main com.cso.EncryptDecryptFiles - Encrypt file: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-02-28 10:06:58,493 DEBUG main com.cso.EncryptDecryptFiles - Entered method encryptFile.
+2020-02-28 10:06:59,009 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:06:59,009 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:06:59,009 DEBUG main com.cso.EncryptDecryptFiles - Encryption complete, encrypted file: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zipenc
+2020-02-28 10:06:59,009 DEBUG main com.cso.EncryptDecryptFiles - Exited method encryptFile.
+2020-02-28 10:06:59,009 DEBUG main com.cso.EncryptDecryptFiles - Exited method encrypt.
+2020-02-28 10:06:59,009 DEBUG main com.cso.MainConverter - Encryption Completed.
+2020-02-28 10:06:59,009 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-02-28 10:06:59,009 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-02-28 10:06:59,009 DEBUG main com.cso.MainConverter - START closeLog METHOD.
+2020-02-28 10:06:59,009 DEBUG main com.cso.MainConverter - END closeLog METHOD.
+2020-02-28 10:06:59,009 DEBUG main com.cso.MainConverter - END main METHOD.
+2020-03-09 22:35:57,794 DEBUG main com.cso.MainConverter - START main METHOD.
+2020-03-09 22:35:57,803 DEBUG main com.cso.ZipFiles - START createZip METHOD with input file parameters: Source file/folder: C:\CSO\PIAAC\Pilot\DataTransfer\prep, Destination file/folder: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-03-09 22:35:57,806 DEBUG main com.cso.ZipFiles - START addFileToZip METHOD
+2020-03-09 22:35:57,808 DEBUG main com.cso.ZipFiles - File Piaac2020Admin.bdb added to zip: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-03-09 22:35:57,809 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-09 22:35:57,809 DEBUG main com.cso.ZipFiles - START addFileToZip METHOD
+2020-03-09 22:35:57,811 DEBUG main com.cso.ZipFiles - File Piaac2020Admin.bfi added to zip: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-03-09 22:35:57,812 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-09 22:35:57,813 DEBUG main com.cso.ZipFiles - START addFileToZip METHOD
+2020-03-09 22:35:57,814 DEBUG main com.cso.ZipFiles - File Piaac2020Admin.bjk added to zip: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-03-09 22:35:57,814 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-09 22:35:57,815 DEBUG main com.cso.ZipFiles - START addFileToZip METHOD
+2020-03-09 22:35:57,816 DEBUG main com.cso.ZipFiles - File Piaac2020Admin.bpk added to zip: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-03-09 22:35:57,816 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-09 22:35:57,816 DEBUG main com.cso.ZipFiles - START addFileToZip METHOD
+2020-03-09 22:35:57,817 DEBUG main com.cso.ZipFiles - File Piaac2020Admin.bsk added to zip: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-03-09 22:35:57,818 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-09 22:35:57,818 DEBUG main com.cso.ZipFiles - START addFileToZip METHOD
+2020-03-09 22:35:57,819 DEBUG main com.cso.ZipFiles - File Piaac2020Scr.bdb added to zip: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-03-09 22:35:57,820 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-09 22:35:57,820 DEBUG main com.cso.ZipFiles - START addFileToZip METHOD
+2020-03-09 22:35:57,821 DEBUG main com.cso.ZipFiles - File Piaac2020Scr.bfi added to zip: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-03-09 22:35:57,821 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-09 22:35:57,822 DEBUG main com.cso.ZipFiles - START addFileToZip METHOD
+2020-03-09 22:35:57,823 DEBUG main com.cso.ZipFiles - File Piaac2020Scr.bjk added to zip: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-03-09 22:35:57,823 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-09 22:35:57,823 DEBUG main com.cso.ZipFiles - START addFileToZip METHOD
+2020-03-09 22:35:57,824 DEBUG main com.cso.ZipFiles - File Piaac2020Scr.bpk added to zip: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-03-09 22:35:57,825 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-09 22:35:57,825 DEBUG main com.cso.ZipFiles - START addFileToZip METHOD
+2020-03-09 22:35:57,826 DEBUG main com.cso.ZipFiles - File Piaac2020Scr.bsk added to zip: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-03-09 22:35:57,826 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-09 22:35:57,831 DEBUG main com.cso.ZipFiles - END createZip METHOD.
+2020-03-09 22:35:57,831 DEBUG main com.cso.MainConverter - Zip Completed.
+2020-03-09 22:35:57,832 DEBUG main com.cso.MainConverter - END main METHOD.
+2020-03-09 22:35:58,150 DEBUG main com.cso.MainConverter - START main METHOD.
+2020-03-09 22:35:58,162 DEBUG main com.cso.EncryptDecryptFiles - Entered EncryptDecrypt constructor.
+2020-03-09 22:35:58,916 DEBUG main com.cso.EncryptDecryptFiles - Exited EncryptDecrypt constructor.
+2020-03-09 22:35:58,916 DEBUG main com.cso.EncryptDecryptFiles - Entered method encrypt with parameter filename C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-03-09 22:35:58,917 DEBUG main com.cso.EncryptDecryptFiles - Encrypt file: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-03-09 22:35:58,917 DEBUG main com.cso.EncryptDecryptFiles - Entered method encryptFile.
+2020-03-09 22:35:58,929 DEBUG main com.cso.EncryptDecryptFiles - Encryption complete, encrypted file: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zipenc
+2020-03-09 22:35:58,929 DEBUG main com.cso.EncryptDecryptFiles - Exited method encryptFile.
+2020-03-09 22:35:58,929 DEBUG main com.cso.EncryptDecryptFiles - Exited method encrypt.
+2020-03-09 22:35:58,930 DEBUG main com.cso.MainConverter - Encryption Completed.
+2020-03-09 22:35:58,930 DEBUG main com.cso.MainConverter - END main METHOD.
+2020-03-09 22:40:16,573 DEBUG main com.cso.MainConverter - START main METHOD.
+2020-03-09 22:40:16,578 DEBUG main com.cso.ZipFiles - START createZip METHOD with input file parameters: Source file/folder: C:\CSO\PIAAC\Pilot\DataTransfer\prep, Destination file/folder: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-03-09 22:40:16,580 DEBUG main com.cso.ZipFiles - START addFileToZip METHOD
+2020-03-09 22:40:16,583 DEBUG main com.cso.ZipFiles - File 25191540016.zip added to zip: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-03-09 22:40:16,583 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-09 22:40:16,584 DEBUG main com.cso.ZipFiles - START addFileToZip METHOD
+2020-03-09 22:40:16,615 DEBUG main com.cso.ZipFiles - File Piaac2020Admin.bdb added to zip: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-03-09 22:40:16,615 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-09 22:40:16,615 DEBUG main com.cso.ZipFiles - START addFileToZip METHOD
+2020-03-09 22:40:16,617 DEBUG main com.cso.ZipFiles - File Piaac2020Admin.bfi added to zip: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-03-09 22:40:16,617 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-09 22:40:16,617 DEBUG main com.cso.ZipFiles - START addFileToZip METHOD
+2020-03-09 22:40:16,618 DEBUG main com.cso.ZipFiles - File Piaac2020Admin.bjk added to zip: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-03-09 22:40:16,619 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-09 22:40:16,619 DEBUG main com.cso.ZipFiles - START addFileToZip METHOD
+2020-03-09 22:40:16,620 DEBUG main com.cso.ZipFiles - File Piaac2020Admin.bpk added to zip: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-03-09 22:40:16,621 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-09 22:40:16,621 DEBUG main com.cso.ZipFiles - START addFileToZip METHOD
+2020-03-09 22:40:16,622 DEBUG main com.cso.ZipFiles - File Piaac2020Admin.bsk added to zip: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-03-09 22:40:16,622 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-09 22:40:16,622 DEBUG main com.cso.ZipFiles - START addFileToZip METHOD
+2020-03-09 22:40:16,624 DEBUG main com.cso.ZipFiles - File Piaac2020Scr.bdb added to zip: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-03-09 22:40:16,624 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-09 22:40:16,624 DEBUG main com.cso.ZipFiles - START addFileToZip METHOD
+2020-03-09 22:40:16,625 DEBUG main com.cso.ZipFiles - File Piaac2020Scr.bfi added to zip: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-03-09 22:40:16,626 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-09 22:40:16,626 DEBUG main com.cso.ZipFiles - START addFileToZip METHOD
+2020-03-09 22:40:16,627 DEBUG main com.cso.ZipFiles - File Piaac2020Scr.bjk added to zip: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-03-09 22:40:16,627 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-09 22:40:16,627 DEBUG main com.cso.ZipFiles - START addFileToZip METHOD
+2020-03-09 22:40:16,628 DEBUG main com.cso.ZipFiles - File Piaac2020Scr.bpk added to zip: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-03-09 22:40:16,629 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-09 22:40:16,629 DEBUG main com.cso.ZipFiles - START addFileToZip METHOD
+2020-03-09 22:40:16,631 DEBUG main com.cso.ZipFiles - File Piaac2020Scr.bsk added to zip: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-03-09 22:40:16,631 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-09 22:40:16,636 DEBUG main com.cso.ZipFiles - END createZip METHOD.
+2020-03-09 22:40:16,636 DEBUG main com.cso.MainConverter - Zip Completed.
+2020-03-09 22:40:16,636 DEBUG main com.cso.MainConverter - END main METHOD.
+2020-03-09 22:40:16,979 DEBUG main com.cso.MainConverter - START main METHOD.
+2020-03-09 22:40:16,984 DEBUG main com.cso.EncryptDecryptFiles - Entered EncryptDecrypt constructor.
+2020-03-09 22:40:17,210 DEBUG main com.cso.EncryptDecryptFiles - Exited EncryptDecrypt constructor.
+2020-03-09 22:40:17,211 DEBUG main com.cso.EncryptDecryptFiles - Entered method encrypt with parameter filename C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-03-09 22:40:17,211 DEBUG main com.cso.EncryptDecryptFiles - Encrypt file: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-03-09 22:40:17,211 DEBUG main com.cso.EncryptDecryptFiles - Entered method encryptFile.
+2020-03-09 22:40:17,224 DEBUG main com.cso.EncryptDecryptFiles - Encryption complete, encrypted file: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zipenc
+2020-03-09 22:40:17,225 DEBUG main com.cso.EncryptDecryptFiles - Exited method encryptFile.
+2020-03-09 22:40:17,225 DEBUG main com.cso.EncryptDecryptFiles - Exited method encrypt.
+2020-03-09 22:40:17,225 DEBUG main com.cso.MainConverter - Encryption Completed.
+2020-03-09 22:40:17,225 DEBUG main com.cso.MainConverter - END main METHOD.
+2020-03-16 11:51:54,304 DEBUG main com.cso.MainConverter - START main METHOD.
+2020-03-16 11:51:54,304 DEBUG main com.cso.MainConverter - START openLog METHOD.
+2020-03-16 11:51:54,304 DEBUG main com.cso.MainConverter - END openLog METHOD.
+2020-03-16 11:51:54,336 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-03-16 11:51:54,336 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-03-16 11:51:54,336 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-03-16 11:51:54,336 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-03-16 11:51:54,336 DEBUG main com.cso.ZipFiles - START createZip METHOD with input file parameters: Source file/folder: C:\CSO\PIAAC\Pilot\DataTransfer\prep, Destination file/folder: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2020-03-16 11:51:54,336 DEBUG main com.cso.ZipFiles - Zip folder C:\CSO\PIAAC\Pilot\DataTransfer\prep
+2020-03-16 11:51:54,336 DEBUG main com.cso.ZipFiles - START addFolderToZip METHOD.
+2020-03-16 11:51:54,336 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-16 11:51:54,336 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-03-16 11:51:54,336 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-03-16 11:51:54,336 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-16 11:51:54,336 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-16 11:51:54,351 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-03-16 11:51:54,351 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-03-16 11:51:54,351 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-16 11:51:54,351 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-16 11:51:54,351 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-03-16 11:51:54,351 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-03-16 11:51:54,351 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-16 11:51:54,351 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-16 11:51:54,351 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-03-16 11:51:54,351 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-03-16 11:51:54,351 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-16 11:51:54,351 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-16 11:51:54,367 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-03-16 11:51:54,367 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-03-16 11:51:54,367 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-16 11:51:54,367 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-16 11:51:54,367 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-03-16 11:51:54,367 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-03-16 11:51:54,367 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-16 11:51:54,367 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-16 11:51:54,383 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-03-16 11:51:54,383 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-03-16 11:51:54,383 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-16 11:51:54,383 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-16 11:51:54,383 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-03-16 11:51:54,383 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-03-16 11:51:54,383 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-16 11:51:54,383 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-16 11:51:54,383 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-03-16 11:51:54,383 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-03-16 11:51:54,383 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-16 11:51:54,383 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-16 11:51:54,398 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-03-16 11:51:54,398 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-03-16 11:51:54,398 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-16 11:51:54,398 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-16 11:51:54,398 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-03-16 11:51:54,398 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-03-16 11:51:54,398 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2020-03-16 11:51:54,398 DEBUG main com.cso.ZipFiles - END addFolderToZip METHOD.
+2020-03-16 11:51:54,398 DEBUG main com.cso.ZipFiles - END createZip METHOD.
+2020-03-16 11:51:54,398 DEBUG main com.cso.MainConverter - Zip Completed.
+2020-03-16 11:51:54,398 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-03-16 11:51:54,398 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-03-16 11:51:54,414 DEBUG main com.cso.MainConverter - START closeLog METHOD.
+2020-03-16 11:51:54,414 DEBUG main com.cso.MainConverter - END closeLog METHOD.
+2020-03-16 11:51:54,414 DEBUG main com.cso.MainConverter - END main METHOD.
+2020-03-16 11:51:54,898 DEBUG main com.cso.MainConverter - START main METHOD.
+2020-03-16 11:51:54,898 DEBUG main com.cso.MainConverter - START openLog METHOD.
+2020-03-16 11:51:54,914 DEBUG main com.cso.MainConverter - END openLog METHOD.
+2020-03-16 11:51:54,914 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-03-16 11:51:54,914 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-03-16 11:51:54,914 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-03-16 11:51:54,914 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-03-16 11:51:54,930 DEBUG main com.cso.EncryptDecryptFiles - Entered EncryptDecrypt constructor.
+2020-03-16 11:51:55,476 ERROR main com.cso.EncryptDecryptFiles - Exited constructor EncryptDecryptFiles with exception java.security.InvalidKeyException: Illegal key size
+2020-03-16 11:51:55,476 ERROR main com.cso.MainConverter - EXCEPTION in Main: java.security.InvalidKeyException: Illegal key size
+2020-03-16 11:51:55,476 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-03-16 11:51:55,476 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-03-16 11:51:55,476 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2020-03-16 11:51:55,476 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2020-03-16 11:51:55,492 DEBUG main com.cso.MainConverter - START closeLog METHOD.
+2020-03-16 11:51:55,492 DEBUG main com.cso.MainConverter - END closeLog METHOD.
+2020-03-16 11:51:55,492 DEBUG main com.cso.MainConverter - END main METHOD.
+2021-03-24 14:43:22,251 DEBUG main com.cso.MainConverter - START main METHOD.
+2021-03-24 14:43:22,267 DEBUG main com.cso.MainConverter - START openLog METHOD.
+2021-03-24 14:43:22,267 DEBUG main com.cso.MainConverter - END openLog METHOD.
+2021-03-24 14:43:22,282 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2021-03-24 14:43:22,282 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2021-03-24 14:43:22,282 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2021-03-24 14:43:22,282 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2021-03-24 14:43:22,282 DEBUG main com.cso.ZipFiles - START createZip METHOD with input file parameters: Source file/folder: C:\CSO\PIAAC\Pilot\DataTransfer\prep, Destination file/folder: C:\CSO\PIAAC\Pilot\DataTransfer\upload\PIAACData.zip
+2021-03-24 14:43:22,282 DEBUG main com.cso.ZipFiles - Zip folder C:\CSO\PIAAC\Pilot\DataTransfer\prep
+2021-03-24 14:43:22,282 DEBUG main com.cso.ZipFiles - START addFolderToZip METHOD.
+2021-03-24 14:43:22,282 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2021-03-24 14:43:22,298 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2021-03-24 14:43:22,298 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2021-03-24 14:43:22,298 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2021-03-24 14:43:22,298 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2021-03-24 14:43:22,298 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2021-03-24 14:43:22,298 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2021-03-24 14:43:22,298 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2021-03-24 14:43:22,298 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2021-03-24 14:43:22,314 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2021-03-24 14:43:22,314 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2021-03-24 14:43:22,314 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2021-03-24 14:43:22,314 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2021-03-24 14:43:22,329 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2021-03-24 14:43:22,329 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2021-03-24 14:43:22,329 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2021-03-24 14:43:22,329 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2021-03-24 14:43:22,329 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2021-03-24 14:43:22,329 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2021-03-24 14:43:22,329 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2021-03-24 14:43:22,329 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2021-03-24 14:43:22,345 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2021-03-24 14:43:22,345 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2021-03-24 14:43:22,345 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2021-03-24 14:43:22,345 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2021-03-24 14:43:22,345 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2021-03-24 14:43:22,345 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2021-03-24 14:43:22,345 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2021-03-24 14:43:22,345 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2021-03-24 14:43:22,361 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2021-03-24 14:43:22,361 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2021-03-24 14:43:22,361 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2021-03-24 14:43:22,361 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2021-03-24 14:43:22,361 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2021-03-24 14:43:22,361 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2021-03-24 14:43:22,376 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2021-03-24 14:43:22,376 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2021-03-24 14:43:22,376 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2021-03-24 14:43:22,376 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2021-03-24 14:43:22,376 DEBUG main com.cso.ZipFiles - END addFileToZip METHOD.
+2021-03-24 14:43:22,376 DEBUG main com.cso.ZipFiles - END addFolderToZip METHOD.
+2021-03-24 14:43:22,392 DEBUG main com.cso.ZipFiles - END createZip METHOD.
+2021-03-24 14:43:22,392 DEBUG main com.cso.MainConverter - Zip Completed.
+2021-03-24 14:43:22,392 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2021-03-24 14:43:22,392 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2021-03-24 14:43:22,392 DEBUG main com.cso.MainConverter - START closeLog METHOD.
+2021-03-24 14:43:22,407 DEBUG main com.cso.MainConverter - END closeLog METHOD.
+2021-03-24 14:43:22,407 DEBUG main com.cso.MainConverter - END main METHOD.
+2021-03-24 14:43:23,048 DEBUG main com.cso.MainConverter - START main METHOD.
+2021-03-24 14:43:23,048 DEBUG main com.cso.MainConverter - START openLog METHOD.
+2021-03-24 14:43:23,064 DEBUG main com.cso.MainConverter - END openLog METHOD.
+2021-03-24 14:43:23,064 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2021-03-24 14:43:23,064 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2021-03-24 14:43:23,064 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2021-03-24 14:43:23,064 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2021-03-24 14:43:23,064 DEBUG main com.cso.EncryptDecryptFiles - Entered EncryptDecrypt constructor.
+2021-03-24 14:43:24,564 ERROR main com.cso.EncryptDecryptFiles - Exited constructor EncryptDecryptFiles with exception java.security.InvalidKeyException: Illegal key size
+2021-03-24 14:43:24,564 ERROR main com.cso.MainConverter - EXCEPTION in Main: java.security.InvalidKeyException: Illegal key size
+2021-03-24 14:43:24,579 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2021-03-24 14:43:24,595 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2021-03-24 14:43:24,595 DEBUG main com.cso.MainConverter - START writeLog METHOD.
+2021-03-24 14:43:24,595 DEBUG main com.cso.MainConverter - END writeLog METHOD.
+2021-03-24 14:43:24,595 DEBUG main com.cso.MainConverter - START closeLog METHOD.
+2021-03-24 14:43:24,595 DEBUG main com.cso.MainConverter - END closeLog METHOD.
+2021-03-24 14:43:24,595 DEBUG main com.cso.MainConverter - END main METHOD.

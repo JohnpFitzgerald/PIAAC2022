@@ -1,0 +1,105 @@
+{Last Updated : June 3rd 2022
+By            : Conor Mac Domhnaill
+Version       : 1.0
+
+Description   : This manipula is used for the Select Records option.
+
+Dependencies  :
+
+*****************************************************************************************************************************************}
+PROCESS PrintLog
+
+SETTINGS
+    InputPath   = 'C:\CSO\PIAAC\pilot\DataTransfer\'
+    OutputPath  = 'C:\CSO\PIAAC\pilot\DataTransfer\logs\'
+
+USES
+    TransferLog    'C:\CSO\PIAAC\pilot\DataTransfer\TransferLog'
+
+INPUTFILE
+    DTLogFile    : TransferLog ('TransferLog.bdb', BLAISE)
+
+OUTPUTFILE
+    DTReportFile : TransferLog ('TransferLog.txt', PRINT)
+
+AUXFIELDS
+    TLDate : STRING [10]
+    TLTime : STRING [8]
+    Day1  : STRING [2]
+    Mth1  : STRING [2]
+    Yr1   : STRING [4]
+    Date1 : STRING [8]
+    Hr1   : STRING [2]
+    Min1  : STRING [2]
+    Sec1  : STRING [2]
+    Time1 : STRING [4]
+
+PROCEDURE DatTime
+
+    TLDate := DatetoStr(SysDate)
+    Day1   := SUBSTRING(TLDate, 1, 2)
+    Mth1   := SUBSTRING(TLDate, 4, 2)
+    Yr1    := SUBSTRING(TLDate, 7, 4)
+    Date1  := Day1 + Mth1 + Yr1
+    TLTime := TimeToStr(SysTime)
+    Hr1    := SUBSTRING(TLTime, 1, 2)
+    Min1   := SUBSTRING(TLTime, 4, 2)
+    Sec1   := SUBSTRING(TLTime, 7, 2)
+    Time1  := Hr1 + Min1 + Sec1
+
+ENDPROCEDURE
+
+
+PROCEDURE MakeDTRepFile
+   DTLogFile.OPEN
+   REPEAT
+      DTLogFile.READNEXT
+      DTReportFile.BlockNo := DTLogFile.BlockNo
+      DTReportFile.LDU_No  := DTLogFile.LDU_No
+      IF (DTReportFile.AdmUpload = EMPTY) THEN
+          DTReportFile.AdmUpload := '  -  '
+      ELSE
+          DTReportFile.AdmUpload := DTLogFile.AdmUpload
+      ENDIF
+      IF (DTReportFile.ScrUpload = EMPTY) THEN
+          DTReportFile.ScrUpload := '    -   '
+      ELSE
+          DTReportFile.ScrUpload := DTLogFile.ScrUpload
+      ENDIF
+      IF (DTReportFile.PiaacUpload = EMPTY) THEN
+          DTReportFile.PiaacUpload := '  -  '
+      ELSE
+          DTReportFile.PiaacUpload := DTLogFile.PiaacUpload
+      ENDIF
+      IF (DTReportFile.Selection = EMPTY) THEN
+          DTReportFile.Selection := '    -    '
+      ELSE
+          DTReportFile.Selection := DTLogFile.Selection
+      ENDIF
+      PRINTSTRING (DTReportFile, '  ' + DTReportFile.BlockNo + '    ' + DTReportFile.LDU_No
+                 + '    ' + DTReportFile.AdmUpload + '    ' + DTReportFile.ScrUpload
+                 + '    ' + DTReportFile.PiaacUpload + '    ' + DTReportFile.Selection)
+
+   UNTIL DTLogFile.LASTRECORD
+   DTLogFile.CLOSE
+ENDPROCEDURE
+
+MANIPULATE
+    DatTime
+    MakeDTRepFile
+
+
+PRINT (DTReportFile)
+SETTINGS
+    PAGELENGTH = 50
+
+    HEADER := '     PIAAC PILOT 2022 -  Data Transfer Report     '
+    HEADER := ''
+    HEADER := 'Date: ' + Day1 + '/' + Mth1 + '/' + Yr1
+    HEADER := 'Time: ' + Hr1 + ':' + Min1
+    HEADER := ''
+    HEADER := '_________________________________________________________'
+    HEADER := ''
+    HEADER := ' BlockNo LDU_No  Admin    Screener    PIAAC    Selection'
+    HEADER := '_________________________________________________________'
+    HEADER := ''

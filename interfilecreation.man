@@ -1,0 +1,16 @@
+SETTINGS
+  DESCRIPTION = 'BLAISE to BLAISE'
+  INPUTPATH = 'C:\CSO\piaac\pilot\Lookups\'
+  OUTPUTPATH = 'C:\CSO\piaac\pilot\Lookups\'
+
+USES
+  InputMeta 'C:\CSO\piaac\pilot\Lookups\PIAACLookup'
+
+  OutputMeta 'C:\CSO\piaac\pilot\Lookups\PIAACLookupInt'
+
+INPUTFILE InputFile1: InputMeta ('PIAACLookup', BLAISE)
+
+OUTPUTFILE OutputFile1: OutputMeta ('PIAACLookupInt', BLAISE)
+
+MANIPULATE
+  OutputFile1.WRITE

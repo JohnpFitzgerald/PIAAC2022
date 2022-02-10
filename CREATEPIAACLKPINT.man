@@ -1,0 +1,17 @@
+SETTINGS
+  DESCRIPTION = 'ASCII to BLAISE'
+  INPUTPATH = 'C:\CSO\piaac\pilot\Lookups\'
+  OUTPUTPATH = 'C:\CSO\piaac\pilot\Lookups\'
+
+USES
+  InputMeta 'C:\CSO\piaac\pilot\Lookups\PIAACLkpInt'
+
+
+INPUTFILE InputFile1: InputMeta ('PIAACLookup.csv', ASCII)
+SETTINGS
+  SEPARATOR = ','
+
+OUTPUTFILE OutputFile1: InputMeta ('PiaacLkpInt', BLAISE)
+
+MANIPULATE
+  OutputFile1.WRITE

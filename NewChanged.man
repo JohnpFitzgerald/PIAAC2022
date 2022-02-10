@@ -1,0 +1,176 @@
+{Last Updated : June 8th 2022
+By            : Conor Mac Domhnaill
+Version       : 1.0
+
+Description   : This manipula is used for the New Changed option.
+
+Dependencies  :
+
+*****************************************************************************************************************************************}
+PROCESS NewChanged
+
+USES
+    PIAACNCLog     'C:\CSO\PIAAC\Pilot\DataTransfer\PIAACNC'
+    Piaac2022Admin 'C:\CSO\PIAAC\Pilot\Piaac2022Admin'
+    Piaac2022Scr   'C:\CSO\PIAAC\Pilot\Piaac2022Scr'
+    TransferLog    'C:\CSO\PIAAC\Pilot\DataTransfer\TransferLog'
+    ConnectChk     'C:\CSO\PIAAC\Pilot\Admin\ConnectCheck'
+
+INPUTFILE
+    PIAACNC      : PIAACNCLog ('C:\CSO\PIAAC\Pilot\DataTransfer\NewChanged.txt', ASCII)
+
+UPDATEFILE
+    PAdmin       : Piaac2022Admin ('C:\CSO\PIAAC\Pilot\Piaac2022Admin', BLAISE)
+
+UPDATEFILE
+    PScreen      : Piaac2022Scr ('C:\CSO\PIAAC\Pilot\Piaac2022Scr', BLAISE)
+
+UPDATEFILE
+    PAdminPrep   : Piaac2022Admin ('C:\CSO\PIAAC\Pilot\DataTransfer\Prep\Piaac2022Admin', BLAISE)
+     SETTINGS
+        OPEN = NO
+
+UPDATEFILE
+    PScreenPrep  : Piaac2022Scr ('C:\CSO\PIAAC\Pilot\DataTransfer\Prep\Piaac2022Scr', BLAISE)
+     SETTINGS
+        OPEN = NO
+
+UPDATEFILE
+    DTLogFile    : TransferLog ('C:\CSO\PIAAC\Pilot\DataTransfer\TransferLog', BLAISE)
+
+UPDATEFILE
+    CountFile   : ConnectChk ('C:\CSO\PIAAC\Pilot\Admin\ConnectCheck', BLAISE)
+
+AUXFIELDS
+    NCTotal : INTEGER
+
+
+PROCEDURE GetAdmin
+  AUXFIELDS
+      BlockNo : STRING [4]
+      LDU_No  : STRING [3]
+      PersID  : STRING [11]
+  INSTRUCTIONS
+    PAdmin.OPEN
+    PAdminPrep.OPEN
+    REPEAT
+      PAdmin.READNEXT
+      IF ((PAdmin.History = NEW) OR (PAdmin.History = CHANGED)) THEN
+         IF (PAdmin.MainAdmin.BlockNo <> EMPTY) AND (PAdmin.MainAdmin.LDUNo <> EMPTY) THEN
+             PAdminPrep.WRITE
+             NCTotal := NCTotal + 1
+             DTLogFile.GET(PAdminPrep.MainAdmin.BlockNo, PAdminPrep.MainAdmin.LDUNo)
+             IF DTLogFile.RESULTOK THEN
+                DTLogFile.AdmUpload := 'Admin'
+                DTLogFile.WRITE
+             ELSE
+                DTLogFile.BlockNo   := PAdminPrep.MainAdmin.BlockNo
+                DTLogFile.LDU_No    := PAdminPrep.MainAdmin.LDUNo
+                DTLogFile.AdmUpload := 'Admin'
+                DTLogFile.WRITE
+             ENDIF
+             PAdmin.RESETHISTORY
+             PAdmin.WRITE
+         ENDIF
+      ENDIF
+    UNTIL PAdmin.EOF
+    PAdminPrep.CLOSE
+    PAdmin.CLOSE
+ENDPROCEDURE
+
+PROCEDURE GetScr
+  AUXFIELDS
+    BlockNo : STRING [4]
+    LDU_No  : STRING [3]
+    PersID  : STRING [11]
+  INSTRUCTIONS
+    PScreen.OPEN
+    PScreenPrep.OPEN
+    REPEAT
+    PScreen.READNEXT
+    IF ((PScreen.History = NEW) OR (PScreen.History = CHANGED)) THEN
+         IF (PScreen.MainDetails.BlockNo <> EMPTY) AND (PScreenPrep.MainDetails.LDUNo <> EMPTY) THEN
+             PScreenPrep.WRITE
+             NCTotal := NCTotal + 1
+             DTLogFile.GET(PScreenPrep.MainDetails.BlockNo, PScreenPrep.MainDetails.LDUNo)
+             IF DTLogFile.RESULTOK THEN
+                DTLogFile.ScrUpload := 'Screener'
+                DTLogFile.WRITE
+             ELSE
+                DTLogFile.BlockNo   := PScreenPrep.MainDetails.BlockNo
+                DTLogFile.LDU_No    := PScreenPrep.MainDetails.LDUNo
+                DTLogFile.ScrUpload := 'Screener'
+                DTLogFile.WRITE
+             ENDIF
+             PScreen.RESETHISTORY
+             PScreen.WRITE
+         ENDIF
+    ENDIF
+    UNTIL PScreen.EOF
+    PScreenPrep.CLOSE
+    PScreen.CLOSE
+ENDPROCEDURE
+
+
+PROCEDURE CopyPIAACNC
+  AUXFIELDS
+     BlockNo : STRING [4]
+     LDU_No  : STRING [3]
+     PersID  : STRING [11]
+     Rsult1  : INTEGER
+     Rsult2  : INTEGER
+     Rsult3  : INTEGER
+     Rsult4  : INTEGER
+  INSTRUCTIONS
+    IF FileExists('C:\CSO\PIAAC\Pilot\DataTransfer\NewChanged.txt"') THEN
+       PIAACNC.OPEN
+       REPEAT
+         PIAACNC.READNEXT
+         PersID  := SUBSTRING(PIAACNC.PersID,1,11)
+         BlockNo := SUBSTRING(PIAACNC.PersID,1,4)
+         LDU_No  := SUBSTRING(PIAACNC.PersID,5,3)
+         IF FileExists('"C:\CSO\PIAAC\Pilot\PDS-System\Output\' + PersID + '.zip"') THEN
+            NCTotal := NCTotal + 1
+            Rsult1 := RUN('COPYFILE "C:\CSO\PIAAC\Pilot\PDS-System\Output\' + PersID + '.zip" "C:\CSO\PIAAC\Pilot\DataTransfer\Prep\' + PersID + '.zip"', WAIT)
+            IF ((BlockNo <> EMPTY) AND (LDU_No <> EMPTY)) THEN
+               DTLogFile.GET(BlockNo, LDU_No)
+               IF DTLogFile.RESULTOK THEN
+                  DTLogFile.PiaacUpload := 'PDS'
+                  DTLogFile.WRITE
+               ELSE
+                  DTLogFile.BlockNo     := BlockNo
+                  DTLogFile.LDU_No      := LDU_No
+                  DTLogFile.PiaacUpload := 'PDS'
+                  DTLogFile.WRITE
+               ENDIF
+            ENDIF
+         ENDIF
+       UNTIL PIAACNC.EOF
+       PIAACNC.CLOSE
+    ENDIF
+ENDPROCEDURE
+
+
+PROCEDURE UpdateCountFile
+  CountFile.OPEN
+  CountFile.READNEXT
+  CountFile.NCTotalCount := NCTotal
+  CountFile.WRITE
+  CountFile.CLOSE
+ENDPROCEDURE
+
+
+MANIPULATE
+  GetAdmin        {Reads the PIAACNC.txt file for PersID(s) & picks up a copy of any corresponding Admin data}
+  GetScr          {Reads the PIAACNC.txt file for PersID(s) & picks up a copy of any corresponding Screener data}
+  CopyPIAACNC     {Reads the PIAACNC.txt file for PersID(s) & picks up a copy of any corresponding PDS data & -data.json file(s)}
+  UpdateCountFile {Keeps a running total for the data transfer report}
+ENDMANIPULATE
+
+
+
+
+
+
+
+

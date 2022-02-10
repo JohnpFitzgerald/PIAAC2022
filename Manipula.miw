@@ -1,0 +1,18 @@
+[Maniplus]
+Maximize=1
+MinimizeBeforeDep=1
+NoMinimize=1
+OwnLogo=1
+LogoName=CSOLogoInterviewerApp.png
+ColorStart=255 255 255
+ColorEnd=255 255 255
+FontSize=10
+NoResize=1
+HideMainForm=0
+AppTitle=Programme for the International Assessment of Adult Competencies 2022
+ALLOWEMPTY=1
+WaitAlwaysOnRun=0
+KeySearch=1
+
+
+

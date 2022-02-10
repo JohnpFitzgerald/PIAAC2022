@@ -1,0 +1,66 @@
+{Author Name    : Caroline Donegan
+                  Updated by Norma, John F, Paul M DEC 2019
+
+ Date written   : 01/12/2019
+ Version        : 1.0
+
+ Description      : PIAAC Survey
+ Dependencies   : See Uses section below
+
+ Version        :2.0
+ Description    : Used for 2020 PIAAC and some changes implemented eg Can_int to CanInterview
+**************************************************************************************************************************************}
+DATAMODEL Piaac2022Scr "PIAAC Screener"
+
+   PRIMARY
+      MainDetails.BlockNo, MainDetails.LDUNo
+
+   SECONDARY
+      BlkKey = MainDetails.BlockNo, MainDetails.IntvwrNo
+      IntKey = MainDetails.IntvwrNo, MainDetails.BlockNo
+      AptKey = MainDetails.BlockNo, MainDetails.IntvwrNo, LastQ
+
+   PARALLEL
+      MainDetails
+      HHGrid
+      Contact
+      LastQ
+      Review
+
+   ATTRIBUTES = REFUSAL, DONTKNOW
+
+   USES
+      SourceData 'C:\CSO\Piaac\Pilot\LookUps\PIAACLookupInt'
+
+
+   INCLUDE "PiaacLibrary.inc"
+   INCLUDE "Procedures.inc"
+   INCLUDE "MainDetails.inc"
+   INCLUDE "HHGrid.inc"  {Person.inc}
+   INCLUDE "ConfirmAge.inc"
+   INCLUDE "SetElig.inc"
+   INCLUDE "HHComponent.inc"
+   INCLUDE "Contact.inc"
+   INCLUDE "LastQ.inc"
+   INCLUDE "Review.inc"
+
+   RULES
+      MainDetails
+      IF (MainDetails.CanInterview = YES) THEN
+          HHGrid                              {Household Members Tab available if NoPersons >= 1}
+          IF (HHGrid.PersonId[MainDetails.NoPersons].Person.Hist <> EMPTY) THEN {Remaining Parallel Tabs shown once ALL Hist fields filled}
+             ConfirmAge
+             IF (ConfirmAge.Ovr16Flg >0) THEN
+                SetElig
+                IF (SetElig.Select = YES) THEN
+                    HHComponent
+                    Contact
+                ENDIF
+             ENDIF
+             LastQ
+          ENDIF
+      ENDIF
+      IF (HHGrid.PersonId[MainDetails.NoPersons].Person.Hist <> EMPTY) THEN
+         Review
+      ENDIF
+ENDMODEL

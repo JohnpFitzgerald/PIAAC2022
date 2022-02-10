@@ -1,0 +1,115 @@
+{Author Name    : John Fitzgerald
+ Date written   : Jan 2022
+ Version        : 1.0
+
+ Description    : Create a JSON file for the PDS
+ Dependencies   : Data available from Screener to populate JSON file
+                  which will be passed via powershell scripts embedded in the Blaise commandline line in PiaacMenu.man
+****************************************************************************************************************************************}
+PROCESS CreatePiaacFile
+
+SETTINGS
+
+   INPUTPATH   = 'C:\CSO\PIAAC\Pilot\'
+   OUTPUTPATH  = 'C:\CSO\PIAAC\PDS-System\Pilot\Input\'
+   OVERFLOW = MESSAGE
+
+USES
+  DATAMODEL JSONMeta
+    FIELDS
+      Curly1 :STRING[1]
+      ISOText :string[7]
+      ISOValue : STRING[7]
+      ISOEnd :STRING[2]
+      UserText : STRING[8]
+      UserValue : STRING[11]
+      UserEnd : STRING[2]
+      GenderText : STRING[10]
+      GenderValue : STRING[2]
+      GenderEnd : STRING[2]
+      EduText: STRING[12]
+      EduValue: STRING[2]
+      EduEnd: STRING[1]
+      Curly2: STRING[1]
+  ENDMODEL
+  BlaiseMeta  'C:\CSO\PIAAC\Pilot\Piaac2022Scr'
+
+UPDATEFILE MainFile  : BlaiseMeta    ('C:\CSO\PIAAC\Pilot\Piaac2022Scr', BLAISE)      {*** Main screener Database ***}
+  SETTINGS
+   INTERCHANGE = SHARED
+
+OUTPUTFILE OutputFile1 : JSONMeta ('C:\CSO\PIAAC\Pilot\PDS-System\Input\PDSFile-template.json', ASCII)
+  SETTINGS
+     OPEN=NO
+
+
+
+AUXFIELDS
+  JSONFile : STRING[16]
+  Rsult   : INTEGER
+
+PROCEDURE WriteTHEFile
+{ JSON Structure example:
+
+"Iso":"eng-ZZZ",
+"User":"50742090016",
+"A2_N02":"01",
+"B2_Q01IE":"03"
+
+}
+  Outputfile1.OPEN
+  Outputfile1.Curly1 :='{'
+  Outputfile1.ISOText := '"Iso":"'
+  CASE MainFile.LastQ.zzLanguage OF
+      01 : Outputfile1.IsoValue := 'fra-ZZZ'
+      02 : Outputfile1.IsoValue := 'deu-ZZZ'
+      03 : Outputfile1.IsoValue := 'ita-ZZZ'
+      04 : Outputfile1.IsoValue := 'lav-ZZZ'
+      05 : Outputfile1.IsoValue := 'lit-ZZZ'
+      06 : Outputfile1.IsoValue := 'pol-ZZZ'
+      07 : Outputfile1.IsoValue := 'por-ZZZ'
+      08 : Outputfile1.IsoValue := 'pan-ZZZ'
+      09 : Outputfile1.IsoValue := 'ron-ZZZ'
+      10 : Outputfile1.IsoValue := 'esp-ZZZ'
+  ENDCASE
+  IF Outputfile1.ISOValue = EMPTY THEN
+     Outputfile1.ISOValue := 'eng-ZZZ'
+  ENDIF
+  Outputfile1.ISOEnd := '",'
+  Outputfile1.UserText := '"User":"'
+  Outputfile1.UserValue  := MainFile.HHComponent.PersID
+  Outputfile1.UserEnd := '",'
+  Outputfile1.GenderText := '"A2_N02":"'
+  IF MainFile.HHComponent.SexChos = M THEN
+     Outputfile1.GenderValue := '01'
+  ELSEIF MainFile.HHComponent.SexChos = F THEN
+     Outputfile1.GenderValue := '02'
+  ENDIF
+  Outputfile1.GenderEnd := '",'
+  Outputfile1.EduText := '"B2_Q01IE":"'
+  Outputfile1.EduValue := str(MainFile.Contact.Educat)
+  Outputfile1.EduEnd := '"'
+  Outputfile1.Curly2 := '}'
+  OutputFile1.WRITE
+  OutputFile1.CLOSE
+ENDPROCEDURE
+
+
+PROCEDURE RenameTheFile
+  JSONFile := MainFile.HHComponent.PersID  + '.JSON'
+  Rsult:= RUN('COPYFILE "C:\CSO\piaac\pilot\PDS-system\input\PDSFile-template.json" "C:\CSO\piaac\pilot\PDS-system\input\"' + JSONFile )
+  IF Rsult <> 0 THEN
+     DISPLAY('JSON file NOT created.  Please check that the record is valid and correct.',WAIT)
+  ELSE
+     MainFile.Review.PiaacFile := 'Created'
+     DISPLAY('The PIAAC file for Block/LDU ' + MainFile.MainDetails.BlockNo + MainFile.MainDetails.LDUNo + ' has now been created.',WAIT)
+     Rsult := RUN('DELETEFILE "C:\CSO\piaac\pilot\PDS-system\input\PDSFile-template.json"')
+  ENDIF
+ENDPROCEDURE
+
+
+PROCEDURE MakeJSON
+  INSTRUCTIONS
+    WriteTHEFile
+    RenameTheFile
+ENDPROCEDURE

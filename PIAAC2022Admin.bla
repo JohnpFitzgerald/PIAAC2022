@@ -1,0 +1,36 @@
+{Author Name    : Caroline Donegan
+
+ Date written   : June Pilot
+ Version        : 1.0
+
+ Description    : PIAAC Survey for Pilot
+ Dependencies   : See Uses section below
+****************************************************************************************************************************************}
+DATAMODEL PiaacAdmin2022 "PIAAC Administration Pilot"
+
+   PRIMARY
+      MainAdmin.BlockNo, MainAdmin.LDUNo
+   SECONDARY
+      MainAdmin.BlockNo, MainAdmin.IntvwrNo
+
+   PARALLEL
+      HHCall
+      FinAdmin
+
+
+   ATTRIBUTES = REFUSAL, DONTKNOW
+
+   USES
+      ScrLookUp   'C:\CSO\Piaac\Pilot\Piaac2022Scr',         {Uses the screener as lookup so PersId can be read into this database}
+      SourceData  'C:\CSO\Piaac\Pilot\LookUps\PIAACLookupInt'   {Reads lookup of households provided by business area}
+
+   INCLUDE "PiaacLibrary.inc"
+   INCLUDE "MainAdmin.inc"
+   INCLUDE "HHCall.inc"
+   INCLUDE "FinAdmin.inc"
+
+   RULES
+      MainAdmin
+      HHCall
+      FinAdmin  {PostIntAdmin.inc}
+ENDMODEL

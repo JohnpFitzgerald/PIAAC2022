@@ -1,0 +1,172 @@
+{Last Updated : June 3rd 2022
+By            : Conor Mac Domhnaill
+Version       : 1.0
+
+Description   : This manipula is used for the Select Records option.
+
+Dependencies  :
+
+*****************************************************************************************************************************************}
+PROCESS Selection
+
+SETTINGS
+    InputPath   = 'C:\CSO\PIAAC\Pilot\'
+    OutputPath  = 'C:\CSO\PIAAC\Pilot\DataTransfer\Prep\'
+
+USES
+    Piaac2022Admin 'C:\CSO\PIAAC\Pilot\Piaac2022Admin'
+    Piaac2022Scr   'C:\CSO\PIAAC\Pilot\Piaac2022Scr'
+    BlockLDU       'C:\CSO\PIAAC\Pilot\DataTransfer\BlockLDU'
+    TransferLog    'C:\CSO\PIAAC\Pilot\DataTransfer\TransferLog'
+    ConnectChk     'C:\CSO\PIAAC\Pilot\Admin\ConnectCheck'
+
+UPDATEFILE
+    PAdmin      : Piaac2022Admin ('C:\CSO\PIAAC\Pilot\Piaac2022Admin', BLAISE)
+
+UPDATEFILE
+    PScreen     : Piaac2022Scr ('C:\CSO\PIAAC\Pilot\Piaac2022Scr', BLAISE)
+
+UPDATEFILE
+    Selection   : BlockLDU ('C:\CSO\PIAAC\Pilot\DataTransfer\BlockLDU', BLAISE)
+
+UPDATEFILE
+    PAdminPrep  : Piaac2022Admin ('C:\CSO\PIAAC\Pilot\DataTransfer\Prep\Piaac2022Admin', BLAISE)
+
+UPDATEFILE
+    PScreenPrep : Piaac2022Scr ('C:\CSO\PIAAC\Pilot\DataTransfer\Prep\Piaac2022Scr', BLAISE)
+
+UPDATEFILE
+    DTLogFile   : TransferLog ('C:\CSO\PIAAC\Pilot\DataTransfer\TransferLog', BLAISE)
+
+
+AUXFIELDS
+    SelTotal : INTEGER
+    AdminFlag : INTEGER
+    ScreenerFlag : INTEGER
+    PDSflag : INTEGER
+
+
+PROCEDURE GetPersID {Get PersID from either the Admin or the Screener}
+    Selection.OPEN
+    REPEAT
+      Selection.READNEXT
+      PAdmin.OPEN
+      PAdmin.GET(Selection.BlockNo, Selection.LDU_No)
+      IF PAdmin.RESULTOK THEN
+         Selection.PersID := PAdmin.MainAdmin.PersID
+         Selection.WRITE
+      ENDIF
+      PAdmin.CLOSE
+      IF (Selection.PersID = EMPTY) THEN
+         PScreen.OPEN
+         PScreen.GET (Selection.BlockNo, Selection.LDU_No)
+         IF (PScreen.RESULTOK) THEN
+             Selection.PersID := PScreen.HHComponent.PersID
+             Selection.WRITE
+         ENDIF
+         PScreen.CLOSE
+      ENDIF
+    UNTIL Selection.EOF
+
+ENDPROCEDURE
+
+
+PROCEDURE GetAdmin {Get BlockNo & LDU_No cases from the Admin}
+    Selection.OPEN
+    REPEAT
+      Selection.READNEXT
+      PAdmin.GET(Selection.BlockNo, Selection.LDU_No)
+      IF PAdmin.RESULTOK THEN
+         IF (PAdmin.MainAdmin.BlockNo <> EMPTY) AND (PAdmin.MainAdmin.LDUNo <> EMPTY) THEN
+             PAdminPrep.WRITE
+             SelTotal := SelTotal + 1
+             DTLogFile.GET(Selection.BlockNo, Selection.LDU_No)
+             IF DTLogFile.RESULTOK THEN
+                DTLogFile.AdmUpload := 'Admin'
+                DTLogFile.Selection := 'Selection'
+                DTLogFile.WRITE
+             ELSE
+                DTLogFile.BlockNo   := PAdmin.MainAdmin.BlockNo
+                DTLogFile.LDU_No    := PAdmin.MainAdmin.LDUNo
+                DTLogFile.AdmUpload := 'Admin'
+                DTLogFile.Selection := 'Selection'
+                DTLogFile.WRITE
+             ENDIF
+         ENDIF
+      ENDIF
+    UNTIL Selection.EOF
+    Selection.CLOSE
+ENDPROCEDURE
+
+
+PROCEDURE GetScr
+    Selection.OPEN
+    REPEAT
+    Selection.READNEXT
+    PScreen.GET (Selection.BlockNo, Selection.LDU_No)
+    IF (PScreen.RESULTOK) THEN
+        IF (PScreen.MainDetails.BlockNo <> EMPTY) AND (PScreen.MainDetails.LDUNo <> EMPTY) THEN
+            PScreenPrep.WRITE
+            SelTotal := SelTotal + 1
+            DTLogFile.GET(Selection.BlockNo, Selection.LDU_No)
+            IF DTLogFile.RESULTOK THEN
+               DTLogFile.ScrUpload := 'Screener'
+               DTLogFile.Selection := 'Selection'
+               DTLogFile.WRITE
+            ELSE
+                DTLogFile.BlockNo   := PScreen.MainDetails.BlockNo
+                DTLogFile.LDU_No    := PScreen.MainDetails.LDUNo
+                DTLogFile.ScrUpload := 'Screener'
+                DTLogFile.Selection := 'Selection'
+                DTLogFile.WRITE
+            ENDIF
+        ENDIF
+    ENDIF
+    UNTIL Selection.EOF
+    Selection.CLOSE
+ENDPROCEDURE
+
+
+PROCEDURE CopyPiaacZips
+  AUXFIELDS
+    PiaacFileZip  : STRING [15]
+    PiaacFileJSON : STRING [21]
+    Rsult1        : INTEGER
+  INSTRUCTIONS
+    Selection.OPEN
+    REPEAT
+      Selection.READNEXT
+      PiaacFileZip := Selection.PersID + '.zip'
+      IF FileExists('C:\CSO\PIAAC\Pilot\PDS-System\Output\' + PiaacFileZip) THEN
+         SelTotal := SelTotal + 1
+         Rsult1 := RUN('COPYFILE "C:\CSO\PIAAC\Pilot\PDS-System\Output\' + PiaacFileZip + '" "C:\CSO\PIAAC\Pilot\DataTransfer\Prep\"' + PiaacFileZip + '"', WAIT)
+         IF ((BlockNo <> EMPTY) AND (LDU_No <> EMPTY)) THEN
+              DTLogFile.GET(BlockNo, LDU_No)
+              IF DTLogFile.RESULTOK THEN
+                 DTLogFile.PiaacUpload := 'PDS'
+                 DTLogFile.Selection   := 'Selection'
+                 DTLogFile.WRITE
+              ELSE
+                 DTLogFile.BlockNo     := BlockNo
+                 DTLogFile.LDU_No      := LDU_No
+                 DTLogFile.PiaacUpload := 'PDS'
+                 DTLogFile.Selection   := 'Selection'
+                 DTLogFile.WRITE
+              ENDIF
+         ENDIF
+      ENDIF
+    UNTIL Selection.EOF
+    Selection.CLOSE
+ENDPROCEDURE
+
+
+
+MANIPULATE
+
+    GetPersID       {Allocates a PersID to a case if either the Admin or the Screener is missing one}
+
+
+    GetAdmin        {Reads the Blaise selection database file for PersID(s) & picks up a copy of any corresponding Admin data}
+    GetScr          {Reads the Blaise selection database file for PersID(s) & picks up a copy of any corresponding Screener data}
+    CopyPIAACZips   {Reads the Blaise selection database file for PersID(s) & picks up a copy of any corresponding PDS data & -data.json file(s)}
+    {UpdateCountFile Keeps a running total for the data transfer report}

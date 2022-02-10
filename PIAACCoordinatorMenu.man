@@ -1,0 +1,1710 @@
+PROCESS PIAACMenu "COORDINATORS Menu for PIAAC Pilot"
+
+{------ FILE SECTION ------------}
+USES
+  Piaac2022Admin    'C:\CSO\PIAAC\Pilot\Piaac2022Admin'
+  Piaac2022Scr      'C:\CSO\PIAAC\Pilot\Piaac2022Scr'
+  Piaac2022Lkp      'C:\CSO\PIAAC\Pilot\lookups\PiaacLkpCoor'
+  TeamIDNumber      'C:\CSO\PIAAC\Pilot\lookups\TeamIDNumber'
+DATAMODEL MenuDescription
+    INCLUDE "PlusMenu.inc"
+    FIELDS
+      MenuID     : STRING [8]
+      MenuText   : STRING [80], EMPTY
+      FunctText  : STRING [10], EMPTY
+      FunctKey   : TFunctionKey, EMPTY
+      StatusText : STRING [100], EMPTY
+      Program    : STRING [10], EMPTY
+ENDMODEL
+
+DATAMODEL TempFile                         {TempFile is used to display fields in the table                                }
+    PRIMARY                                {It is updated from 3 soucres                                                   }
+      BlockNo, Ldu_No                      { - Lookup for HH identifier                                                    }
+    SECONDARY                              { - Screener for person selected, appointments etc.                             }
+      SortField                            { - Admin for summary details                                                   }
+    FIELDS
+      BlockNo        : STRING [4]
+      Ldu_No         : STRING [3]
+      IntvwrNo       : STRING [3]
+      RefWk          : 1..17
+      Sample         : STRING [13], EMPTY
+      PersID         : STRING [11]
+      PiaacFile      : STRING [7], EMPTY
+      TeamId         : STRING[2]
+      LastVis        : STRING [10], EMPTY
+      NoVisits       : String[10]
+      ContName       : STRING [25] {- change type in datamodel, currently Auxfield}
+      Age            : STRING [3]
+      Sex            : (M "Male",
+                        F "Female")
+      Address        : STRING [150], EMPTY
+      BookID_PPC     : STRING[7]
+      BookID_PP1     : STRING[7]
+      BookID_PP2     : STRING[7]
+      BookID_PRC     : STRING[7]
+      LastDat        : DATETYPE, EMPTY
+      LastTim        : TIMETYPE, EMPTY
+      LastDay        : STRING [9]
+      Phone          : STRING[20]
+      NoPers         : 1..20
+      PersonChosen   : 1..20
+      AppDate        : DATETYPE
+      AppTime        : TIMETYPE
+      AppNote        : STRING [150]
+      LastTyp        : (FF "Face to face contact",
+                        PH "Phone contact",
+                        NC "No contact with household member yet"), EMPTY
+      LastType       : STRING [20]
+      DispCode       : String[50]
+      CaseStat       : STRING [80], EMPTY
+      VMLastQuestion : STRING [12]
+      VMLatestStatus : STRING [20]
+      VMBothStatus   : STRING[40]
+      SortField      : STRING [20]    {required for SECONDARY, Sortfield}
+      Finalise       : (Yes, No), EMPTY
+ENDMODEL
+
+DATAMODEL VisitTable
+  fieldS
+    DateVisit:datetype
+    TimeVisit:TimeType
+    VisitDetails: string[10]
+    Duration:0..240
+ENDMODEL
+
+DATAMODEL VisitDetailTable
+  fields
+    TeamId         : STRING[2]
+    IntvwrNo       : STRING [3]
+    BlockNo        : STRING [4]
+    Ldu_No         : STRING [3]
+    ContName       : STRING [25]
+    Address        : STRING [150], EMPTY
+    PersID         : STRING [11]
+    PersonChosen   : 1..20
+    NoPers         : 1..20
+    DispCode       : String[50]
+    VMBothStatus   : STRING[40]
+    Finalise       : (Yes, No), EMPTY
+ENDMODEL
+
+
+
+DATAMODEL OneLine
+    FIELDS
+     OneLine: STRING [110]
+ENDMODEL
+
+DATAMODEL AllocReport
+   FIELDS
+     SequenceNo         : STRING [2]
+     CoordinatorNo      : STRING [2]
+     InterviewerNo      : String [3]
+     BlockNo            : STRING [4]
+     LduNo              : STRING [3]
+     LastVisit          : STRING [4]
+     LastDay            : STRING [9]
+     LastDate           : STRING [10]
+     LastTime           : STRING [5]
+     LastTypeofContact  : STRING [14]
+     AdminDispositionCode     : STRING [50]
+ENDMODEL
+
+DATAMODEL SummaryReport
+   FIELDS
+     BlockNo          : STRING [4]
+     SequenceNo       : STRING [2]
+     Complete         : STRING [2]
+     Refusals         : STRING [2]
+     Ineligible       : STRING [2]
+     Disability       : STRING [2]
+     Vacants          : STRING [2]
+     Appointment      : STRING [2]
+     CallBack         : STRING [2]
+     TotalCases       : STRING [2]
+     EmptyField       : string[2]
+     CompleteAdmin    : STRING [2]
+     CompletePiaac    : STRING [2]
+     ScrCompleteOnly  : STRING [2]
+     VMPaused         : STRING [2]
+ENDMODEL
+
+DATAMODEL QuestSummary
+   FIELDS
+     SequenceNo         : STRING [2]
+     CoordinatorNo      : STRING [2]
+     InterviewErNo      : STRING [3]
+     BlockNo            : STRING [4]
+     LduNo              : STRING [3]
+     NoPersons          : 1..20
+     PersonChosen       : 1..20
+     PersID             : STRING [11]
+     IntervieweeName    : STRING [25] {- change type in datamodel, currently Auxfield}
+     IntervieweeAddress : STRING [150], EMPTY
+     IntervieweeGender  : STRING[6]
+     IntervieweeAge     : STRING[3]
+     NoOfVisits         : STRING [10], EMPTY
+     LastTypeContact    : string[14]
+     LastDateVisited    : string[10], EMPTY
+     LastTimeVisisted   : string[5], EMPTY
+     LastDispositionCode: String[50]
+     ScreenerFinalised  : string[3]
+     PiaacStatus        : STRING [20]
+ENDMODEL
+
+  INPUTFILE AnyCSVFile : OneLine   {Open reports folder}
+     SETTINGS
+       OPEN = NO
+
+  UPDATEFILE PAdmin: Piaac2022Admin ('C:\CSO\PIAAC\Pilot\Piaac2022Admin', BLAISE)
+     SETTINGS
+        OPEN = NO
+
+  UPDATEFILE Piaac: Piaac2022Scr ('C:\CSO\PIAAC\Pilot\Piaac2022Scr', BLAISE)
+     SETTINGS
+        OPEN = NO
+
+   {Lookup file is input only as it is not updated by the interviewer}
+  INPUTFILE MainPiaacLkp     : Piaac2022Lkp ('C:\CSO\PIAAC\Pilot\Lookups\PiaacLookup', BLAISE)
+     SETTINGS
+        OPEN = NO
+
+  INPUTFILE CoorNumberI : TeamIDNumber('C:\CSO\PIAAC\Pilot\Lookups\TeamIDNumber', BLAISE)
+     SETTINGS
+        OPEN = NO
+
+ {Lookup file containing only specific Interviewer cases}
+  INPUTFILE PiaacLkpCoorI : Piaac2022Lkp('C:\CSO\PIAAC\Pilot\Lookups\PiaacLkpCoor', BLAISE)
+     SETTINGS
+        OPEN = NO
+
+  TEMPORARYFILE TempTable    : TempFile     {required for sorting}
+  TEMPORARYFILE TempLkp      : TempFile
+  TEMPORARYFILE TempVisit    : VisitTable            {Temporary file containing all Piaac cases}
+  TEMPORARYFILE TempComplete : TempFile            {Temporary file containing the Completed cases}
+  TEMPORARYFILE TempInComplete : TempFile            {Temporary file containing the Completed cases}
+  TEMPORARYFILE MyMenu       : MenuDescription     { Menu Description }
+
+  OUTPUTFILE CoorNumberO : TeamIDNumber('C:\CSO\PIAAC\Pilot\Lookups\TeamIDNumber', BLAISE)
+     SETTINGS
+        OPEN = NO
+
+  OUTPUTFILE PiaacLkpCoorO : Piaac2022Lkp('C:\CSO\PIAAC\Pilot\Lookups\PiaacLkpCoor', BLAISE)
+     SETTINGS
+        OPEN = NO
+
+  OUTPUTFILE LookupOut : Piaac2022Lkp ('C:\CSO\PIAAC\Pilot\Reports\PiaacLookup.csv',ASCII)
+     SETTINGS
+        OPEN = NO
+        HEADERLINE = YES
+        SEPARATOR  = ','
+        DELIMITER = '"'
+
+
+  OUTPUTFILE WklySumOut : SummaryReport ('C:\CSO\PIAAC\Pilot\Reports\SummaryStatus.csv',ASCII)
+     SETTINGS
+        OPEN = NO
+        HEADERLINE = YES
+        SEPARATOR  = ','
+        DELIMITER = '"'
+
+  OUTPUTFILE WklyAllocOut : AllocReport ('C:\CSO\PIAAC\Pilot\reports\CaseDispositions.csv', ASCII)
+     SETTINGS
+        OPEN = NO
+        HEADERLINE = YES
+        SEPARATOR  = ','
+        DELIMITER = '"'
+
+  OUTPUTFILE ExcelReport : QuestSummary('C:\CSO\PIAAC\Pilot\reports\InformationSummary.csv', ASCII)
+     SETTINGS
+        OPEN = NO
+        HEADERLINE = YES
+        SEPARATOR  = ','
+        DELIMITER = '"'
+
+AUXFIELDS
+  Stop          : (Yes, No)
+  Reslt, Count  : INTEGER
+  OneOkayButton : (OK "Press this button for Okay")
+  SomeButtons   : (OK        "Press this button for Okay",
+                   Cancel    "Press this button to Cancel",
+                   Ready     "Ready",
+                   Dep       "DEP",
+                   Accept    "Press this button to accept@!&Accept",
+                   Insert    "Insert",
+                   Searchdia "Search dialog",
+                   Dialg     "Another dialog",
+                   Aproc     "Procedure",
+                   SortB     "Sort something")
+  SortAUXField  : (RfWk    "SeqNo",
+                   CasStat "&Screener Status")
+  SortAUXField2 : (BlockNumber "&Block No",  {headings in Sort option}
+                   LduNumber   "&Ldu No",
+                   Aged "Age")
+  SortAUXField3 : (RfWk        "SeqNo",
+                   BlockNumber "&Block No",  {headings in Sort option}
+                   LduNumber   "&Ldu No",
+                   PersonID    "PersID",
+                   Aged        "Age")
+  SortAUXField4 : (RfWk        "SeqNo",
+                   BlockNumber "&Block No",        {headings in Sort option}
+                   LduNumber   "&Ldu No",
+                   PersonID    "PersID")
+  TeamNo        : STRING [2]
+  cOORid        : string[2]
+  IntNo         : string[3],empty
+  SeqNum        : STRING [2],empty
+  VALIDFLAG     : STRING [1]
+  VALIDFLAGint  : STRING [1]
+  VALIDFLAGseq  : STRING [1]
+  PrevRefWk     : 1..17
+  CTot          : INTEGER [2]
+  ScrOnly       : INTEGER [2]
+  InComp        : INTEGER [2]
+  CompAdm       : INTEGER [2]
+  CompIntrv     : INTEGER [2]
+  CompIntrvP    : INTEGER [2]
+  Refuser       : INTEGER [2]
+  Disabler      : INTEGER [2]
+  Vacanter      : INTEGER [2]
+  Ineliger      : INTEGER [2]
+  Appointmtr    : INTEGER [2]
+  CallBacker    : INTEGER [2]
+  Sampler       : INTEGER [2]
+  Replacer      : INTEGER [2]
+  Miler         : INTEGER [2]
+  Prevblock     : INTEGER [5], EMPTY
+  PrevInt       : STRING [4], EMPTY
+  PrevRef       : 1..17
+  PrevTot       : INTEGER [2]
+  PrevComp      : INTEGER [2]
+  PrevCompl     : INTEGER [2]
+  PrevComplP    : INTEGER [2]
+  PrevScrOnly   : INTEGER [2]
+  PrevInComp    : INTEGER [2]
+  PrevRefus     : INTEGER [2]
+  PrevInelgs    : INTEGER [2]
+  PrevDisab     : INTEGER [3]
+  PrevVac       : INTEGER [2]
+  PrevInel      : INTEGER [2]
+  PrevApt       : INTEGER [2]
+  PrevCallB     : INTEGER [2]
+  PrevSamp      : INTEGER [2]
+  PrevRep       : INTEGER [2]
+  PrevOutSt     : INTEGER [2]
+  Name          : STRING
+  I, LatVisNo   : INTEGER
+  Lt            : INTEGER
+  SDate         : STRING [10]
+  STime         : STRING [8]
+  Day1          : STRING [2]
+  Mth1          : STRING [2]
+  Yr1           : STRING [4]
+  Date1         : STRING [8]
+  Hr1           : STRING [2]
+  Min1          : STRING [2]
+  Sec1          : STRING [2]
+  Time1         : STRING [4]
+  PiaacOutFile  : STRING [15]
+  LenFld        : INTEGER [2]
+  PosnFld       : INTEGER [2]
+  PosnFld2      : INTEGER [2]
+  PosnFld3      : INTEGER [2]
+  CalcLen       : INTEGER [2]
+  CalcLen2      : INTEGER [2]
+  VMPersId      : STRING [11]
+  VMLastQ       : STRING
+  VMStatusRef   : STRING
+  Rsult1        : INTEGER
+  Rsult2        : INTEGER
+  Rsult3        : INTEGER
+  Rsult4        : INTEGER
+  Rsult5        : INTEGER
+  Rsult6        : INTEGER
+  Rsult7        : INTEGER
+  Rsult8        : INTEGER
+  Rsult9        : INTEGER
+  Rsult10        : INTEGER
+  Rsult11       : INTEGER
+  Rsult12        : INTEGER
+  Rsult13        : INTEGER
+  Rsult14        : INTEGER
+  Rsult15        : INTEGER
+  Rsult16        : INTEGER
+  Rsult17        : INTEGER
+  Rsult18        : INTEGER
+  StopAppend    : String[1]
+
+{--------- MENU SECTION -----------}
+
+PROCEDURE MakeMenuLine
+PARAMETERS
+  IMPORT ID : STRING
+  IMPORT MT : STRING
+  IMPORT FT : STRING
+  IMPORT FK : INTEGER
+  IMPORT ST : STRING
+  IMPORT PR : STRING
+INSTRUCTIONS
+  MyMenu.MenuID     := ID
+  MyMenu.MenuText   := MT
+  MyMenu.FunctText  := FT
+  MyMenu.FunctKey   := FK
+  MyMenu.StatusText := ST
+  MyMenu.Program    := PR
+  MyMenu.WRITE
+ENDPROCEDURE
+
+PROCEDURE CreateMenu
+  MakeMenuLine('1','&File','',60,'Menu with different views of the returned data','')
+  MakeMenuLine('1.1','Survey Home Page','',0,'Summary of cases returned','AllCases')
+  MakeMenuLine('1.2','','',0,'','')
+  MakeMenuLine('1.3','View Complete Cases ','',0,'Screener finalised AND Piaac finished','ViewComp')
+  MakeMenuLine('1.4','View Incomplete Cases','',0,'Screener not finalised OR Piaac not finished','InCompl')
+  MakeMenuLine('1.5','View Look-up File','',0,'Open the lookup information also creates an Excel file in REPORTS folder','OpLkp')
+  MakeMenuLine('1.6','','',0,'','')
+  MakeMenuLine('1.7','&Login to REACH portal','',0,'REACH portal','reach')
+  MakeMenuLine('1.8','&CSO Home Page','Home Page',0,'','HomePage')
+  MakeMenuLine('1.9','E&xit application','Alt-F4',14,'Exit Application','')
+
+  MakeMenuLine('2','&Reports','',60,'Reports menu - creates excel files in the Reports folder','')
+  MakeMenuLine('2.1','All Cases Report','',0,'A summary of all the data returned to date ','XlReport')
+  MakeMenuLine('2.2','','',0,'','')
+  MakeMenuLine('2.3','Status Report (by Interview)','',0,'Lists by Block/Ldu and shows Case Disposition per household ','WkAlloc')
+  MakeMenuLine('2.4','','',0,'','')
+  MakeMenuLine('2.5','Summary Report (by Block)','',0,'A Block Summary of the Status of Interivews','WkSumm')
+  MakeMenuLine('2.6','','',0,'','')
+  MakeMenuLine('2.7','&Open Reports folder','',0,'This will open the folder containing all reports ','RepFolder')
+
+  MakeMenuLine('3','&Transfer Logs','',60,'Data downloaded from Office details','')
+  MakeMenuLine('3.1','&Open Transfer Logs folder','',0,'Data downloaded from Office details','TransLog')
+
+  MakeMenuLine('4','&Validations','',60,'Data downloaded from Office details','')
+  MakeMenuLine('4.1','&Open Validation Docs folder','',0,'Data downloaded from Office details','AdminDocs')
+
+  MakeMenuLine('5','&Survey Maintenance','',60,'Housekeeping and Maintenance menu','')
+  MakeMenuLine('5.1','Update TeamID Number','',0,'Get Lookup details for new TeamID','EnterID')
+ { MakeMenuLine('4.2','','',0,'','')
+  MakeMenuLine('4.3','Add\Amend\Delete Interviewer(s) on Team Database','',0,'Update the team Look-up data with a new Interviewer','UpdInt')  }
+
+
+  MakeMenuLine('6','&Information','',60,'Information','')
+  MakeMenuLine('6.1','&User Manual','',0,'About the application','UMan')
+  MakeMenuLine('6.2','','',0,'','')
+  MakeMenuLine('6.3','&Version Information','',0,'About the system','InfoBox')
+ENDPROCEDURE
+
+{---------SORT PROCECURES --------------}
+PROCEDURE FillSortFieldAllC {To allow data in each field to be sorted for All Cases AllCasesDetails}
+  CASE SortAUXField OF
+    Rfwk        : IF TempTable.RefWk <> EMPTY THEN
+                     TempTable.SortField := STR(PAdmin.MainAdmin.RefWk)
+                  ELSE
+                     TempTable.SortField := '·'
+                  ENDIF
+    CasStat     : IF TempTable.CaseStat <> EMPTY THEN
+                     TempTable.SortField := PAdmin.FinAdmin.CaseStatUS
+                  ELSE
+                     TempTable.SortField := '·'
+                  ENDIF
+  ENDCASE
+ENDPROCEDURE
+
+PROCEDURE FillSortFieldComp {To allow data in each field to be sorted for Completed screen}
+  CASE SortAUXField4 OF
+    Rfwk        : TempComplete.SortField := STR(TempComplete.RefWk)
+    BlockNumber : TempComplete.SortField := (TempComplete.BlockNo)
+    LduNumber   : TempComplete.SortField := (TempComplete.Ldu_No)
+    PersonID    : TempComplete.SortField := (TempComplete.PersId)
+  ENDCASE
+ENDPROCEDURE
+
+{---------FILL THE TEMPORARY TABLES ---------------}
+
+{Fills - used to populate the temporary table depending on the menu options}
+
+PROCEDURE FillAdmData {Data from the Admin Datamodel}
+  TempTable.INITRECORD
+  TempTable.BlockNo        := PAdmin.MainAdmin.BlockNo
+  TempTable.Ldu_No         := PAdmin.MainAdmin.LduNo
+  Temptable.RefWk          := PAdmin.MainAdmin.RefWk
+  TempTable.IntvwrNo       := PAdmin.MainAdmin.IntvwrNo
+  TempTable.TeamId         := PAdmin.MainAdmin.TeamID
+  TempTable.VMLastQuestion := PAdmin.FinAdmin.VMLastQAsked
+  TempTable.VMLatestStatus := PAdmin.FinAdmin.VMLatestStatus
+  TempTable.CaseStat       := PAdmin.FinAdmin.CaseStatus
+  TempTable.Finalise       := PAdmin.FinAdmin.Finalise
+  Temptable.NoVisits       := PAdmin.FinAdmin.LastVis
+  Temptable.LastVis        := PAdmin.FinAdmin.LastVis
+  TempTable.LastDay        := PAdmin.FinAdmin.LastDay
+  TempTable.LastDat        := PAdmin.FinAdmin.LastDat
+  TempTable.LastTim        := PAdmin.FinAdmin.LastTim
+  TempTable.LastTyp        := PAdmin.FinAdmin.LastTyp
+  TempTable.VMLatestStatus := PAdmin.FinAdmin.VMLatestStatus
+  TempTable.VMBothStatus   := PAdmin.FinAdmin.VMLatestStatus+' '+PAdmin.FinAdmin.VMLastQAsked
+  TempTable.DispCode := empty
+  FOR I := 1 TO 10 DO
+     IF (PAdmin.HHCall.CallGrid.Call[I].NewVisit = NO) THEN
+        if (PAdmin.HHCall.CallGrid.Call[I].Interim in [1..5]) then
+           if (PAdmin.HHCall.CallGrid.Call[I].Interim = 1) then
+               TempTable.DispCode := 'Interim: Call Back - Appt'
+           elseif (PAdmin.HHCall.CallGrid.Call[I].Interim = 2) then
+                  TempTable.DispCode := 'Interim: Call Back - No Appt'
+           elseif (PAdmin.HHCall.CallGrid.Call[I].Interim = 3) then
+                  TempTable.DispCode := 'Interim: Not at Home'
+           elseif (PAdmin.HHCall.CallGrid.Call[I].Interim = 4) then
+                  TempTable.DispCode := 'Interim: Initial Refusal'
+           elseif (PAdmin.HHCall.CallGrid.Call[I].Interim = 5) then
+                  TempTable.DispCode := 'Interim: Illness or Disability'
+           endif
+        else
+           if (PAdmin.HHCall.CallGrid.Call[I].Screener <> empty) then
+              if (PAdmin.HHCall.CallGrid.Call[I].Screener = 1) then
+                 TempTable.DispCode := 'Screener Completed'
+              else   {Updated to 2022 Disposition codes by JF 08-19}
+                 CASE PAdmin.HHCall.CallGrid.Call[I].Screener OF
+                      {C2: TempTable.DispCode :='Scr: Sample persons selected'{ 2. Compl - 2 samp pers sel} }
+                      PB: TempTable.DispCode :='Scr: Partial Complete: break-off'{ 3. Partial compl break-off}
+                      RH: TempTable.DispCode :='Scr: Refusal - Hhld member' {4. Refusal - Hhld member }
+                      RG: TempTable.DispCode :='Scr: Refusal - gatekeeper'{ 5. Refusal - gatekeeper}
+                      LP: TempTable.DispCode :='Scr: Language problem'{ 7. Language problem}
+                      LM: TempTable.DispCode :='Scr: Learning/mental disability'{ 9. Learning/mental disability}
+                      HI: TempTable.DispCode :='Scr: Hearing impairment'{ 12. Hearing impairment}
+                      BV: TempTable.DispCode :='Scr: Blindness/visual impairment'{ 13. Blindness/visual impairment}
+                      SI: TempTable.DispCode :='Scr: Speech impairment'{14. Speech impairment}
+                      PD: TempTable.DispCode :='Scr: Physical disability'{15. Physical disability}
+                      OD: TempTable.DispCode :='Scr: Other disability'{16. Other disability}
+                      OU: TempTable.DispCode :='Scr: Other (unspecified)'{17. Other (unspecified)}
+                      CN: TempTable.DispCode :='Scr: Complete - no eligible persons'{19. Complete - no elg pers}
+                      UL: TempTable.DispCode :='Scr: Unable to locate dwelling'{20. Unable to locate dwelling}
+                      MX: TempTable.DispCode :='Scr: Maximum number of calls'{21. Maximum number of calls}
+                      DC: TempTable.DispCode :='Scr: Dwelling under construction'{22. Dwelling under constructn}
+                      TA: TempTable.DispCode :='Scr: Temporarily absent'{24. Temporarily absent}
+                      VU: TempTable.DispCode :='Scr: Vacant dwelling'{26. Vacant dwelling}
+                      DA: TempTable.DispCode :='Scr: Duplication - Already Interviewed'{27. Duplication}
+                      AN: TempTable.DispCode :='Scr: Address not a dwelling'{28. Address not a dwelling}
+                 ENDCASE
+              endif
+           endif
+           IF (PADMIN.HHCALL.CALLGRID.CALL[I].Initial <> EMPTY) THEN
+              if (PAdmin.HHCall.CallGrid.Call[I].Initial = 1) then
+                 TempTable.DispCode := 'Case Initialisation Completed'
+              else
+                 CASE PAdmin.HHCall.CallGrid.Call[I].Initial OF
+                      PB: TempTable.DispCode :='Init: Partial Complete/break-off'
+                      RS: TempTable.DispCode :='Init: Refusal - Sample Person'
+                      RO: TempTable.DispCode :='Init: Refusal - Other'
+                      LP: TempTable.DispCode :='Init: Language problem'
+                      RW: TempTable.DispCode :='Init: Reading and writing difficulty'
+                      LM: TempTable.DispCode :='Init: Learning/mental disability'
+                      HI: TempTable.DispCode :='Init: Hearing impairment'
+                      BV: TempTable.DispCode :='Init: Blindness/visual impairment'
+                      SI: TempTable.DispCode :='Init: Speech impairment'
+                      PD: TempTable.DispCode :='Init: Physical disability'
+                      OD: TempTable.DispCode :='Init: Other disability'
+                      OU: TempTable.DispCode :='Init: Other (unspecified)'
+                      DT: TempTable.DispCode :='Init: Death'
+                      MX: TempTable.DispCode :='Init: Maximum number of calls'
+                      MW: TempTable.DispCode :='Init: Moved within the Country'
+                      TA: TempTable.DispCode :='Init: Temporarily absent'
+                      IL: TempTable.DispCode :='Init: Not in target population'
+                      DA: TempTable.DispCode :='Init: Duplication'
+                      TP: TempTable.DispCode :='Init: Technical Problem'
+                 ENDCASE
+              endif
+           ENDIF
+           if (PAdmin.HHCall.CallGrid.Call[I].BackgroundQuestionnaire <> EMPTY) then
+              if (PAdmin.HHCall.CallGrid.Call[I].BackgroundQuestionnaire = 1) then
+                 TempTable.DispCode := 'Background Questionnaire Completed'
+              else
+                 CASE PAdmin.HHCall.CallGrid.Call[I].BackgroundQuestionnaire OF
+                      PB: TempTable.DispCode :='BQ: Partial Complete/break-off'
+                      RS: TempTable.DispCode :='BQ: Refusal - Sample Person'
+                      RO: TempTable.DispCode :='BQ: Refusal - Other'
+                      LP: TempTable.DispCode :='BQ: Language problem'
+                      RW: TempTable.DispCode :='BQ: Reading and writing difficulty'
+                      LM: TempTable.DispCode :='BQ: Learning/mental disability'
+                      HI: TempTable.DispCode :='BQ: Hearing impairment'
+                      BV: TempTable.DispCode :='BQ: Blindness/visual impairment'
+                      SI: TempTable.DispCode :='BQ: Speech impairment'
+                      PD: TempTable.DispCode :='BQ: Physical disability'
+                      OD: TempTable.DispCode :='BQ: Other disability'
+                      OU: TempTable.DispCode :='BQ: Other (unspecified)'
+                      DT: TempTable.DispCode :='BQ: Death'
+                      MX: TempTable.DispCode :='BQ: Maximum number of calls'
+                      MW: TempTable.DispCode :='BQ: Moved within the country'
+                      TA: TempTable.DispCode :='BQ: Temporarily absent'
+                      IL: TempTable.DispCode :='BQ: Not in target population'
+                      DA: TempTable.DispCode :='BQ: Duplication - already interviewed'
+                      TP: TempTable.DispCode :='BQ: Technical Problem'
+                 ENDCASE
+              endif
+           ENDIF
+           IF (PAdmin.HHCall.CallGrid.Call[I].Locator <> EMPTY) then
+              IF (PAdmin.HHCall.CallGrid.Call[I].Locator = 1) then
+                 TempTable.DispCode := 'Locator Questionnaire Completed'
+              else
+                 CASE PAdmin.HHCall.CallGrid.Call[I].Locator OF
+                      PB: TempTable.DispCode :='Locator: Partial Complete/break-off'
+                      RS: TempTable.DispCode :='Locator: Refusal - Sample Person'
+                      RO: TempTable.DispCode :='Locator: Refusal - Other'
+                      LS: TempTable.DispCode :='Locator: Lacks the skills to use the tablet'
+                      LP: TempTable.DispCode :='Locator: Language problem'
+                      RW: TempTable.DispCode :='Locator: Reading and writing difficulty'
+                      LM: TempTable.DispCode :='Locator: Learning/mental disability'
+                      HI: TempTable.DispCode :='Locator: Hearing impairment'
+                      BV: TempTable.DispCode :='Locator: Blindness/visual impairment'
+                      SI: TempTable.DispCode :='Locator: Speech impairment'
+                      PD: TempTable.DispCode :='Locator: Physical disability'
+                      OD: TempTable.DispCode :='Locator: Other disability'
+                      OU: TempTable.DispCode :='Locator: Other (unspecified)'
+                      DT: TempTable.DispCode :='Locator: Death'
+                      MX: TempTable.DispCode :='Locator: Maximum number of calls'
+                      TA: TempTable.DispCode :='Locator: Temporarily absent'
+                      DA: TempTable.DispCode :='Locator: Duplication'
+                      TP: TempTable.DispCode :='Locator: Technical Problem'
+                 ENDCASE
+              endif
+           ENDIF
+           IF (PAdmin.HHCall.CallGrid.Call[I].Exercise <> EMPTY) then
+              IF (PAdmin.HHCall.CallGrid.Call[I].Exercise = 1) then
+                 TempTable.DispCode := 'Exercise Completed'
+              else
+                 CASE PAdmin.HHCall.CallGrid.Call[I].Exercise OF
+                      PB: TempTable.DispCode :='Exercise: Partial Complete/break-off'
+                      RS: TempTable.DispCode :='Exercise: Refusal - Sample Person'
+                      RO: TempTable.DispCode :='Exercise: Refusal - Other'
+                      LP: TempTable.DispCode :='Exercise: Language problem'
+                      RW: TempTable.DispCode :='Exercise: Reading and writing difficulty'
+                      LM: TempTable.DispCode :='Exercise: Learning/mental disability'
+                      HI: TempTable.DispCode :='Exercise: Hearing impairment'
+                      BV: TempTable.DispCode :='Exercise: Blindness/visual impairment'
+                      SI: TempTable.DispCode :='Exercise: Speech impairment'
+                      PD: TempTable.DispCode :='Exercise: Physical disability'
+                      OD: TempTable.DispCode :='Exercise: Other disability'
+                      OU: TempTable.DispCode :='Exercise: Other (unspecified)'
+                      DT: TempTable.DispCode :='Exercise: Death'
+                      MX: TempTable.DispCode :='Exercise: Maximum number of calls'
+                      TA: TempTable.DispCode :='Exercise: Temporarily absent'
+                      DA: TempTable.DispCode :='Exercise: Duplication'
+                      TP: TempTable.DispCode :='Exercise: Technical Problem'
+                 ENDCASE
+              ENDIF
+           ENDIF
+        ENDIF
+     ENDIF
+  ENDDO
+ENDPROCEDURE
+
+PROCEDURE FillScrData                               {Data from the Screener Datamodel}
+  TempTable.PersID    := Piaac.HHComponent.PersID
+  TempTable.ContName  := Piaac.HHComponent.FlNmChos
+  TempTable.Address   := Piaac.Contact.PostalAddr
+  TempTable.Phone     := Piaac.Contact.ConPh
+  TempTable.NoPers    := Piaac.MainDetails.NoPersons
+  TempTable.PersonChosen    := Piaac.HHComponent.PersChosen
+  TempTable.Age             := str(Piaac.HHComponent.CI_Age)
+  TempTable.Sex             := Piaac.HHComponent.CI_Gender
+  TempTable.AppDate   := Piaac.Lastq.AppDate
+  TempTable.AppNote   := Piaac.Lastq.AppNote
+  TempTable.AppTime   := Piaac.Lastq.APPTime
+  TempTable.PiaacFile := Piaac.Review.PiaacFile
+ENDPROCEDURE
+
+PROCEDURE FillTempData
+  IF (PAdmin.RESULTOK) THEN
+        FillAdmData
+        PIaac.GET(PaDMin.MainAdmin.BlockNo, PAdmin.MainAdmin.LduNo)
+        IF Piaac.ResultOK THEN
+           FillScrData
+        ENDIF
+        TempTable.WRITE
+  ENDIF
+ENDPROCEDURE
+
+PROCEDURE FillIntData      {To check Int No. entered, against Int No. in lookup and pass * or Ref week parameters}
+  TempTable.ERASE
+  PAdmin.OPEN
+  Piaac.OPEN
+  FOR Count:= 1 TO PAdmin.FORMCOUNT  DO
+      PAdmin.READNEXT
+      IF (iNTnO = '*') and (SeqNum = '*') and (TeamNo = PAdmin.MainAdmin.TeamID) THEN
+         FillTempData
+      ELSEIF (PAdmin.MainAdmin.IntvwrNo = iNTnO) and (SeqNum = '*') and (TeamNo = PAdmin.MainAdmin.TeamID) THEN
+             FillTempData
+          elseif (iNTnO = '*') and (PAdmin.MainAdmin.RefWk = val(SeqNum)) and (TeamNo = PAdmin.MainAdmin.TeamID) THEN
+                 FillTempData
+              elseif (PAdmin.MainAdmin.IntvwrNo = iNTnO) and (PAdmin.MainAdmin.RefWk = val(SeqNum)) and (TeamNo = PAdmin.MainAdmin.TeamID) then
+                     FillTempData
+      ENDIF
+  ENDDO
+  PAdmin.CLOSE
+  Piaac.CLOSE
+  TempTable.RESET
+ENDPROCEDURE
+
+PROCEDURE FillLkpTable {Fill the lookup table - and writes an output excel file to the Reports folder}
+  TempLkp.ERASE
+  PiaacLkpCoorI.OPEN
+  PiaacLkpCoorI.READNEXT
+  LookupOut.OPEN
+  WHILE (PiaacLkpCoorI.RESULTOK) DO
+        TempLkp.INITRECORD
+        TempLkp.BlockNo  := PiaacLkpCoorI.BlockNo
+        TempLkp.Ldu_No   := PiaacLkpCoorI.Ldu_No
+        TempLkp.RefWk    := PiaacLkpCoorI.RefWK
+        TempLkp.Sample   := PiaacLkpCoorI.Sample
+        TempLkp.Address  := PiaacLkpCoorI.Address
+        TempLkp.TeamID   := PiaacLkpCoorI.tEAMid
+        TempLkp.Intvwrno := PiaacLkpCoorI.Intvwrno
+        TempLkp.BookID_PPC  := PiaacLkpCoorI.BookID_PPC
+        TempLkp.BookID_PP1  := PiaacLkpCoorI.BookID_PP1
+        TempLkp.BookID_PP2  := PiaacLkpCoorI.BookID_PP2
+        TempLkp.BookID_PRC  := PiaacLkpCoorI.BookID_PRC
+        LookupOut.BlockNo    :=  PiaacLkpCoorI.BlockNo
+        LookupOut.LDU_No     :=  PiaacLkpCoorI.LDU_No
+        LookupOut.RefWk      :=  PiaacLkpCoorI.RefWk
+        LookupOut.Sample     :=  PiaacLkpCoorI.Sample
+        LookupOut.Address    :=  PiaacLkpCoorI.Address
+        LookupOut.Intvwrno   :=  PiaacLkpCoorI.Intvwrno
+        LookupOut.TeamId     :=  PiaacLkpCoorI.TeamId
+        LookupOut.Bookid_ppc :=  PiaacLkpCoorI.Bookid_ppc
+        LookupOut.Bookid_pp1 :=  PiaacLkpCoorI.Bookid_pp1
+        LookupOut.Bookid_pp2 :=  PiaacLkpCoorI.Bookid_pp2
+        LookupOut.Bookid_prc :=  PiaacLkpCoorI.Bookid_prc
+        LookupOut.WRITE
+        TempLkp.WRITE
+        PiaacLkpCoorI.READNEXT
+  ENDWHILE
+  PiaacLkpCoorI.CLOSE
+  LookupOut.CLOSE
+  Rsult1 := RUN('COPYFILE C:\CSO\PIAAC\Pilot\reports\PiaacLookup.csv C:\CSO\PIAAC\Pilot\reports\PiaacLookup'+date1+'.csv')
+  Rsult1 := RUN('DELETEFILE C:\CSO\PIAAC\Pilot\reports\PiaacLookup.csv')
+ENDPROCEDURE
+
+PROCEDURE FillComp {Used to fill Completed cases table}
+  TempComplete.INITRECORD
+  TempComplete.RefWk    := PAdmin.MainAdmin.RefWk
+  TempComplete.BlockNo  := PAdmin.MainAdmin.BlockNo
+  TempComplete.Ldu_No   := PAdmin.MainAdmin.LduNo
+  TempComplete.IntvwrNo := PAdmin.MainAdmin.IntvwrNo
+  TempComplete.TeamID   := Piaac.mAINdETAILS.tEAMid
+  TempComplete.PersID   := Piaac.HHComponent.PersID
+  TempComplete.Finalise       := PAdmin.FinAdmin.Finalise
+  TempComplete.VMLatestStatus := PAdmin.FinAdmin.VMLatestStatus
+  TempComplete.LastVis  := PAdmin.FinAdmin.LastVis
+  TempComplete.LastDay  := PAdmin.FinAdmin.LastDay
+  TempComplete.LastDat  := PAdmin.FinAdmin.LastDat
+  TempComplete.LastTim  := PAdmin.FinAdmin.LastTim
+ENDPROCEDURE
+
+PROCEDURE FillInComp {Used to fill Completed cases table}
+  TempInComplete.INITRECORD
+  TempInComplete.RefWk    := PAdmin.MainAdmin.RefWk
+  TempInComplete.BlockNo  := PAdmin.MainAdmin.BlockNo
+  TempInComplete.Ldu_No   := PAdmin.MainAdmin.LduNo
+  TempInComplete.IntvwrNo := PAdmin.MainAdmin.IntvwrNo
+  TempInComplete.TeamID   := Piaac.mAINdETAILS.tEAMid
+  TempInComplete.PersID   := Piaac.HHComponent.PersID
+  TempInComplete.Finalise       := PAdmin.FinAdmin.Finalise
+  TempInComplete.VMLatestStatus := PAdmin.FinAdmin.VMLatestStatus
+  TempInComplete.LastVis  := PAdmin.FinAdmin.LastVis
+  TempInComplete.LastDay  := PAdmin.FinAdmin.LastDay
+  TempInComplete.LastDat  := PAdmin.FinAdmin.LastDat
+  TempInComplete.LastTim  := PAdmin.FinAdmin.LastTim
+ENDPROCEDURE
+
+PROCEDURE FillCompTable {Fill temp table for Completed Cases - used for table display}
+  TempComplete.ERASE
+  PAdmin.OPEN
+  Piaac.OPEN
+  PAdmin.READNEXT
+  WHILE (PAdmin.RESULTOK) DO
+    IF (PAdmin.FinAdmin.Finalise = Yes) and (PAdmin.FinAdmin.VMLatestStatus = 'Finished') and (TeamNo = PAdmin.MainAdmin.TeamID) THEN
+       Piaac.GET (PAdmin.MainAdmin.BlockNo, PAdmin.MainAdmin.LduNo)
+       IF Piaac.ResultOK THEN
+          FillComp
+          TempComplete.WRITE
+       ENDIF
+    ENDIF
+    PAdmin.READNEXT
+  ENDWHILE
+  PAdmin.CLOSE
+  Piaac.close
+ENDPROCEDURE
+
+PROCEDURE FillInCompTable
+  TempInComplete.ERASE
+  PAdmin.OPEN
+  Piaac.OPEN
+  PAdmin.READNEXT
+  WHILE (PAdmin.RESULTOK) DO
+    IF (TeamNo = PAdmin.MainAdmin.TeamID) THEN
+       IF (PAdmin.FinAdmin.Finalise = No) or ((PAdmin.FinAdmin.VMLatestStatus = 'Paused') or (PAdmin.FinAdmin.VMLatestStatus = EMPTY)) THEN
+          Piaac.GET (PAdmin.MainAdmin.BlockNo, PAdmin.MainAdmin.LduNo)
+          IF Piaac.ResultOK THEN
+             FillInComp
+             TempInComplete.WRITE
+          ENDIF
+       ENDIF
+    ENDIF
+    PAdmin.READNEXT
+  ENDWHILE
+  PAdmin.CLOSE
+  Piaac.close
+ENDPROCEDURE
+
+{Next 2 Procedures for displaying the Respondant details..
+ used by - Allcases
+         - Completes
+         - InCompletes}
+
+DIALOGBOX DispData "Case details for Interview"
+  SIZE     = (690, 660)
+  DEFAULTBUTTON = NO
+  VALIDATEDIRECT = YES
+  ESCAPE = YES
+  BOLD = YES
+  {CSO Reference Data}
+  GROUPBOX = ('Reference Data',20,20,380,100)
+  CONTROL TeamID
+    LABEL      = ('Coordinator No: ', 50, 45)
+    POSITION   = (200, 45)
+    STATUS     = 'Coord No'
+    EDIT       = No
+  CONTROL Intvwrno
+    LABEL      = ('Interviewer No: ',250, 45)
+    POSITION   = (360, 45)
+    STATUS     = 'Interviewer Number'
+    EDIT       = No
+  CONTROL BlockNo
+    LABEL      = ('Block Number: ', 50, 75)
+    POSITION   = (200, 75)
+    STATUS     = 'Block Number'
+    EDIT       = No
+  CONTROL Ldu_No
+    LABEL      = ('LDU Number: ', 250, 75)
+    POSITION   = (360, 75)
+    STATUS     = 'LDU Number'
+    EDIT       = No
+  {Participant Details}
+  GROUPBOX = ('Respondent details',20,140,640,80)
+  CONTROL ContName
+    LABEL      = ('Name: ', 50, 160)
+    POSITION   = (150, 160)
+    STATUS     = 'Name of Piaac participant'
+    EDIT       = No
+  CONTROL Address
+    LABEL      = ('Address: ', 50, 180)
+    POSITION   = (150, 180)
+    STATUS     = 'Address of Piaac participant'
+    EDIT       = No
+  CONTROL PersID
+    LABEL      = ('PersID: ', 350, 160)
+    POSITION   = (420, 160)
+    EDIT       = No
+  CONTROL PersonChosen
+    LABEL      = ('Person: ', 50, 200)
+    POSITION   = (150, 200)
+    EDIT       = No
+  CONTROL NoPERS
+    LABEL      = (' of ', 170, 200)
+    POSITION   = (200, 200)
+    EDIT       = No
+  {Case Status}
+    GROUPBOX = ('Case Status',20,230,400,100)
+  CONTROL Finalise
+    LABEL      = ('Finalised Screener :', 50, 250)
+    POSITION   = (200, 250)
+    STATUS     = 'Level of Completion of Screener'
+    EDIT       = No
+  CONTROL VMBothStatus
+    LABEL      = ('Piaac Int Status :', 50, 270)
+    POSITION   = (200, 270)
+    STATUS     = 'Level of Completion of Piaac Interview'
+    EDIT       = No
+  CONTROL DispCode
+    LABEL      = ('Disposition Code : ',50, 290)
+    POSITION   = (200, 290)
+    STATUS     = 'Level of completion from Administration DB'
+    EDIT       = No
+  LOOKUP TempVisit
+    SIZE = (650,200)
+    POSITION   = (20,350)
+    FIELDS
+       DateVisit "Date of Visit"
+       TimeVisit "Time of Visit"
+       VisitDetails "Visit Details"
+       Duration "Duration"
+  BUTTON OneOkayButton
+    VALUE   = OK
+
+PROCEDURE PopVisitDetails
+  PAdmin.OPEN
+  PAdmin.GET(TempTable.BlockNo, TempTable.Ldu_No)
+  IF (PAdmin.RESULTOK) THEN
+     FillTempData
+     TempVisit.OPEN
+     TempVisit.ERASE
+     FOR I := 1 TO 10 DO
+           TempVisit.DateVisit := PAdmin.HHCall.CallGrid.Call[I].Date
+           TempVisit.TimeVisit := PAdmin.HHCall.CallGrid.Call[I].Time
+           TempVisit.VisitDetails   := PAdmin.HHCall.CallGrid.Call[I].Visit
+           TempVisit.Duration  := PAdmin.HHCall.CallGrid.Call[I].Duration
+           TempVisit.write
+     ENDDO
+     tEMPvISIT.RESET
+     TempVisit.close
+     PAdmin.CLOSE
+  ENDIF
+  DispData
+ENDPROCEDURE
+
+{1.1 - All Cases}
+
+DIALOGBOX SelectSortFieldAllC "Select Sort Field"  {Dialog box with headings for fields at SortAuxfield}
+  SIZE = (280,120)
+  CONTROL SortAUXField
+    POSITION = (10,10)
+    LABEL = NO
+  BUTTON OneOkayButton
+    VALUE = OK
+PROCEDURE SortTempTableAllC     {for fields at SortAuxfield}
+    SelectSortFieldAllC
+    IF OneOkayButton = OK THEN
+       TempTable.RESET
+       TempTable.SETREADKEY(PRIMARY)
+       FOR Count:= 1 TO TempTable.FORMCOUNT DO
+           TempTable.READNEXT
+           FillSortFieldAllC
+           TempTable.WRITE
+       ENDDO
+       TempTable.RESET
+       TempTable.SETREADKEY(SECONDARY)
+    ENDIF
+ENDPROCEDURE
+
+DIALOGBOX AllCasesDetails "All cases returned  for Team: ^TeamNo"   {File menu - All Cases screen}
+  SIZE = (1100, 650)
+  LOOKUP TempTable
+  SEARCH = Yes
+ FIELDS    {Headings in dialogbox}
+    RefWk   "Seq No."
+    BlockNo  "Block No."
+    Ldu_No   "Ldu No."
+    {TeamID   "CoordinatorNo" }
+    Intvwrno "Int No"
+    PersId   "PersonId"
+    ContName "Contact Name"
+    CaseStat "Screener Status"
+    VMBothStatus "Piaac Status"
+    Finalise    "Finalised"
+   BUTTON SomeButtons
+    VALUE = SortB
+    CAPTION = 'S&ort'
+    SIZE = (120, 32)
+    POSITION = (365, 608)
+    ONPRESS = SortTempTableAllC
+  BUTTON SomeButtons
+    VALUE = dep
+    CAPTION = 'Interview Details'
+    SIZE = (120, 32)
+    POSITION = (565, 608)
+    ONPRESS =  PopVisitDetails
+  BUTTON SomeButtons
+    SIZE = (120, 32)
+    POSITION = (765, 608)
+    VALUE = Cancel
+    CAPTION = '&Cancel'
+
+PROCEDURE OpenAllCases
+   TempTable.ERASE
+   SortField:= (TempTable.BlockNo)
+   FillIntData
+   TempTable.RESET
+   IF (TempTable.FORMCOUNT = 0)THEN
+      Display ('No valid cases on the Database for TeamID: '+tEAMnO,wait)
+   ELSE
+      AllCasesDetails
+   ENDIF
+ENDPROCEDURE
+
+PROCEDURE ChkRefAllCases
+  VALIDFLAGInt := 'N'
+  VALIDFLAGSeq := 'N'
+  IF SomeButtons = OK THEN
+     IF ((iNTnO > '000') and (iNTnO < '099')) OR (iNTnO = '*') THEN
+        validflagInt := 'Y'
+     ELSE
+        DISPLAY('Invalid Interviewer Number. Enter a value between 001 and 099. To view all Interviewers enter an asterisk.', WAIT)
+     ENDIF
+     IF ((SeqNum > '00') and (SeqNum < '15')) OR (SeqNum = '*') THEN
+        validflagSeq := 'Y'
+     ELSE
+        DISPLAY('Invalid Sequence Number. Enter a value between 01 and 14. To view all Sequences enter an asterisk.', WAIT)
+     ENDIF
+  ELSE
+     stop := yes
+  ENDIF
+ENDPROCEDURE
+
+DIALOGBOX EnterIntNo "Enter Interviewer No. or Sequence No."
+  SIZE = (350, 170)
+  CONTROL iNTnO
+    LABEL = ('Enter Interviewer Number:',25,30)
+    POSITION = (200,30)
+  CONTROL SeqNum
+    LABEL = ('Enter Sequence Number:',25,80)
+    POSITION = (200,80)
+  BUTTON SomeButtons
+    CAPTION = 'OK'
+    VALUE = OK
+    POSITION = (80, 130)
+  BUTTON SomeButtons
+    CAPTION = 'Cancel'
+    VALUE = Cancel
+    POSITION = (230, 130)
+
+
+{1.3 Complete cases here}
+
+DIALOGBOX SelectSortFieldComp "Select Sort Field"  {Dialog box with headings for fields at SortAuxfield4}
+  SIZE = (280,275)
+  CONTROL SortAUXField4
+    POSITION = (10,10)
+    LABEL = NO
+  BUTTON OneOkayButton
+    VALUE = OK
+PROCEDURE SortTempTable4    {for fields at SortAuxfield4}
+  SelectSortFieldComp
+  IF OneOkayButton = OK THEN
+    TempComplete.RESET
+    TempComplete.SETREADKEY(PRIMARY)
+    FOR Count:= 1 TO TempComplete.FORMCOUNT DO
+      TempComplete.READNEXT
+      FillSortFieldComp
+      TempComplete.WRITE
+    ENDDO
+    TempComplete.RESET
+    TempComplete.SETREADKEY(SECONDARY)
+  ENDIF
+ENDPROCEDURE
+
+DIALOGBOX OpenComplete "Returned Completed Cases (Screener Finalised AND Piaac complete) for Team: ^TeamNo "
+  SIZE = (1000, 650)
+  LOOKUP TempComplete
+  SEARCH = YES
+  FIELDS    {Headings in dialogbox}
+    RefWk   "Seq No."
+    BlockNo  "Block No."
+    Ldu_No   "Ldu No."
+    {TeamID   "Coordinator No." }
+    IntvwrNo "Int No."
+    PersID   "PersID"
+    Finalise "Finalised"
+    VMLatestStatus "Piaac Status"
+    LastVis "Visit No."
+    LastDay "Last Day"
+    LastDat "Last Visit Date"
+    LastTim "Last Time"
+  BUTTON SomeButtons
+    CAPTION = 'Interview Details'
+    SIZE = (120, 32)
+    POSITION = (260, 608)
+    ONPRESS =  PopVisitDetails
+  BUTTON SomeButtons
+    VALUE = Cancel
+    CAPTION = '&Cancel'
+    SIZE = (120, 32)
+    POSITION = (560, 608)
+
+PROCEDURE ViewComplete                       {Used to Open dialog to view completed records}
+  SortField:= (TempComplete.BlockNo)
+  FillCompTable
+  TempComplete.RESET
+  IF (TempComplete.FORMCOUNT = 0)THEN
+     Display ('No Completed cases returned for TeamID: '+tEAMnO,wait)
+  ELSE
+     OpenComplete
+  ENDIF
+ENDPROCEDURE
+
+{1.4 InComplete cases}
+
+DIALOGBOX OpenInComp "Returned InCompletes (Screener not Finalised OR Piaac not finished)  for Team: ^TeamNo"
+  SIZE = (1000, 650)
+  LOOKUP TempInComplete
+  SEARCH = YES
+  FIELDS    {Headings in dialogbox}
+    RefWk   "Seq No."
+    BlockNo  "Block No."
+    Ldu_No   "Ldu No."
+    {TeamID   "Coordinator No."   }
+    IntvwrNo "Int No."
+    PersID   "PersID"
+    Finalise "Finalised"
+    VMLatestStatus "Piaac Status"
+    LastVis "Visit No."
+    LastDay "Last Day"
+    LastDat "Last Visit Date"
+    LastTim "Last Time"
+  BUTTON SomeButtons
+    CAPTION = 'Interview Details'
+    SIZE = (120, 32)
+    POSITION = (260, 608)
+    ONPRESS =  PopVisitDetails
+  BUTTON SomeButtons
+    VALUE = Cancel
+    CAPTION = '&Cancel'
+    SIZE = (120, 32)
+    POSITION = (560, 608)
+
+PROCEDURE ViewInComplete
+  SortField:= (TempInComplete.BlockNo)
+  FillInCompTable
+  TempInComplete.RESET
+  IF (TempInComplete.FORMCOUNT = 0)THEN
+     Display ('No Incomplete cases returned for TeamID: '+tEAMnO ,wait)
+  ELSE
+     OpenInComp
+  ENDIF
+ENDPROCEDURE
+
+{1.5 Coordinators Lookup file Displayed and written to Excel}
+
+DIALOGBOX ShowLkp "Lookup file By Block for Team: ^TeamNo"    {Used at File, Screener Incomplete on menu} {Three buttons}
+  SIZE = (1100, 650)
+  LOOKUP TempLkp
+  SEARCH = YES
+  FIELDS    {Headings in dialogbox}
+    BlockNo "Block No."
+    Ldu_No "Ldu No."
+    RefWk "Sequence"
+    Sample "Sample"
+    Address "Address"
+    Intvwrno "InterviewerNo"
+    BookID_PPC "BookIDPPC"
+    BookID_PP1 "BookIDPP1"
+    BookID_PP2 "BookIDPP2"
+    BookID_PRC "BookIDPRC"
+  BUTTON SomeButtons
+    VALUE = Cancel
+    CAPTION = '&Cancel'
+    SIZE = (120, 32)
+    POSITION = (420, 608)
+
+PROCEDURE OpenLkp
+  FillLkpTable
+  TempLkp.RESET
+  IF (TempLkp.FORMCOUNT = 0) THEN
+     Display ('No Lookup Data available',wait)
+  ELSE
+     ShowLkp
+  ENDIF
+ENDPROCEDURE
+
+{1.7 open CSO Home Page}
+{On Homepage close check for Zip. IF THERE - Unzip, Decryt and append the data}
+PROCEDURE AppendData
+  IF FILEEXISTS('c:\cso\piaac\Pilot\datatransfer\download\PIAACCOordData.zipenc') then
+     Display ('About to add new data to your Database ', WAIT)
+     StopAppend := 'N'
+     Rsult6 := RUN('C:\CSO\File_Converter\dist\FileConverter.bat /u "C:\CSO\PIAAC\Pilot\DataTransfer\Download\PIAACCOordData.zip" "C:\CSO\PIAAC\Pilot\DataTransfer\Import"', WAIT)
+     IF NOT (FILEEXISTS('C:\CSO\PIAAC\Pilot\DataTransfer\Import\*.*enc')) THEN
+        Display ('Unzipping the data has failed ', WAIT)
+        StopAppend :='Y'
+     ELSE
+         Rsult7 := RUN('C:\CSO\File_Converter\dist\FileConverter.bat /d "C:\CSO\PIAAC\Pilot\DataTransfer\Import"', WAIT)
+         IF NOT (FILEEXISTS('C:\CSO\PIAAC\Pilot\DataTransfer\Import\*.*')) THEN
+            Display ('Decrypting the data has failed', WAIT)
+            StopAppend := 'Y'
+         ENDIF
+         IF (FILEEXISTS('C:\CSO\piaac\Pilot\DataTransfer\Import\Team*.csv')) THEN
+            Rsult8 := RUN('COPYFILE "C:\CSO\piaac\Pilot\DataTransfer\Import\Team*.csv" "C:\CSO\piaac\Pilot\intdatalogs"', WAIT)
+            IF (Rsult8 <> 0) THEN
+               Display ('Copy the Log file has failed', WAIT)
+               StopAppend := 'Y'
+            ENDIF
+         ELSEIF (FILEEXISTS('C:\CSO\piaac\Pilot\DataTransfer\Import\Team*.xlsx')) THEN
+                Rsult9 := RUN('COPYFILE "C:\CSO\piaac\Pilot\DataTransfer\Import\Team*.xlsx" "C:\CSO\piaac\Pilot\Validations"', WAIT)
+                IF (Rsult9 <> 0) THEN
+                   Display ('Copy the Log file has failed', WAIT)
+                   StopAppend := 'Y'
+                ENDIF
+             ELSEIF (FILEEXISTS('C:\CSO\piaac\Pilot\DataTransfer\Import\PiaacPilotscr.bdb')) THEN
+                    Rsult10 := CALL('C:\CSO\PIAAC\Pilot\AppendScr')
+                    IF (Rsult10 <> 0) THEN
+                       Display ('Appending Screener Data has failed', WAIT)
+                       StopAppend := 'Y'
+                    ENDIF
+                 ELSEIF (FILEEXISTS('C:\CSO\piaac\Pilot\DataTransfer\Import\PiaacPilotadmin.bdb')) THEN
+                        Rsult11 := CALL('C:\CSO\PIAAC\Pilot\AppendAdmin')
+                        IF (Rsult11 <> 0) THEN
+                           Display ('Appending Administrative Data has failed', WAIT)
+                           StopAppend := 'Y'
+                        ENDIF
+                 ENDIF
+                 IF StopAppend = 'N' then
+                    Rsult12 := RUN('deletefile "c:\cso\piaac\Pilot\datatransfer\import\*.*"',wait)
+                    Rsult13 := RUN('deletefile "C:\CSO\PIAAC\Pilot\DataTransfer\Download\PIAACCOordData.zip"',wait)
+                    Display ('New Data has been added to your Database. Check transfer log for results', WAIT)
+                 ELSE
+                    Display ('Job Failure while try to add data to the Database. Contact CSO', WAIT)
+                 ENDIF
+     ENDIF
+  ENDIF
+  IF (Rsult1 = 0) and (Rsult2 = 0) and (Rsult3 = 0) and (Rsult4 = 0) and (Rsult5 = 0) THEN
+      Rsult14 := RUN('DELETEFILE "C:\Documents and Settings\All Users\Desktop\DataTransfer\*.*"', WAIT)
+  endif
+ENDPROCEDURE
+
+PROCEDURE ReachProc
+    Rsult1 := RUN ('"C:\Program Files (x86)\Fortinet\FortiClient\Forticlient.exe"')
+    IF (Rsult1 <> 0) THEN
+        Display ('Unable to connect to reach portal - Ensure you are connected to the internet.', WAIT)
+    ENDIF
+ENDPROCEDURE
+
+
+PROCEDURE HomePageProc
+    IF FILEEXISTS('C:\Documents and Settings\All Users\Desktop\DataTransfer\*.*') then
+       Rsult1 := RUN('COPYFILE "C:\Documents and Settings\All Users\Desktop\DataTransfer\*.*" "C:\CSO\piaac\Archive"', WAIT)
+       Rsult2 := RUN('C:\CSO\File_Converter\dist\FileConverter.bat /e "C:\Documents and Settings\All Users\Desktop\DataTransfer"', WAIT)
+       Rsult3 := RUN('C:\CSO\File_Converter\dist\FileConverter.bat /z "C:\Documents and Settings\All Users\Desktop\DataTransfer" "C:\CSO\piaac\Pilot\DataTransfer\Upload\PiaacHQFiles.zip"', WAIT)
+       Rsult4 := RUN('COPYFILE "C:\CSO\DataTransfer\PiaacHQFiles.zip" "C:\CSO\piaac\Archive"', WAIT)
+    endif
+    IF (Rsult1 <> 0) OR (Rsult2 <> 0) OR (Rsult3 <> 0) OR (Rsult4 <> 0) THEN
+       Display ('There was a problem creating a Zip for Head Office. Contact the CSO ', WAIT)
+    ENDIF
+    Rsult5 := RUN('"C:\Program Files\Internet Explorer\iexplore.exe" "http://piaac/"', WAIT)
+    IF (Rsult5 <> 0) THEN
+        Display ('Unable to open browser. Contact the CSO ', WAIT)
+    else
+        AppendData
+    ENDIF
+ENDPROCEDURE
+
+{2.1 - All cases Excel Report}
+PROCEDURE FillRepData
+  TempTable.ERASE
+  SortField:= (TempTable.BlockNo)
+  PAdmin.OPEN
+  Piaac.OPEN
+  FOR Count:= 1 TO PAdmin.FORMCOUNT  DO
+      PAdmin.READNEXT
+      IF (TeamNo = PAdmin.MainAdmin.TeamID) then
+         FillTempData
+      ENDIF
+  ENDDO
+  PAdmin.CLOSE
+  Piaac.CLOSE
+  TempTable.RESET
+ENDPROCEDURE
+
+PROCEDURE OpenInfoSumm
+      Reslt:= RUN('C:\CSO\PIAAC\Pilot\Reports\InformationSummary'+date1+'.csv')
+ENDPROCEDURE
+
+DIALOGBOX  ViewRpt "Click Yes if you would like to open the Report "
+  SIZE = (400,100)
+  TEXT = ('@>Do you want to open the Report now ?',10,20)
+  BUTTON SomeButtons
+    CAPTION = 'Yes'
+    VALUE = OK
+    onpress = OpenInfoSumm
+    ready=yes
+  BUTTON SomeButtons
+    CAPTION = 'No'
+    VALUE = Cancel
+
+PROCEDURE XlRpt
+  FillRepData
+  ExcelReport.OPEN
+  FOR Count := 1 TO TempTable.FORMCOUNT DO
+      TempTable.READNEXT
+      ExcelReport.SequenceNo := str(Temptable.RefWk)
+      ExcelReport.CoordinatorNo := TempTable.TeamID
+      ExcelReport.InterviewerNo := TempTable.Intvwrno
+      ExcelReport.BlockNo    := TempTable.BlockNo
+      ExcelReport.LduNo     := TempTable.Ldu_No
+      ExcelReport.PersID    := TempTable.PersID
+      ExcelReport.NoPersons :=   TempTable.NoPers
+      ExcelReport.PersonChosen :=   TempTable.PersonChosen
+      ExcelReport.IntervieweeName := TempTable.ContName
+      ExcelReport.IntervieweeAddress := TempTable.Address
+      IF TempTable.Sex = 1 THEN
+         ExcelReport.IntervieweeGender := 'Male'
+      ELSEIF TempTable.Sex = 2 THEN
+             ExcelReport.IntervieweeGender := 'Female'
+          ENDIF
+      ExcelReport.IntervieweeAge := TempTable.Age
+      ExcelReport.NoOfVisits     := PAdmin.FinAdmin.LastVis
+      ExcelReport.LastDateVisited      := datetostr(TempTable.LastDat)
+      ExcelReport.LastTimeVisisted      := timetostr(TempTable.LastTim)
+      IF TempTable.LastTyp = 1 THEN
+              ExcelReport.LastTypeContact    := 'Face to Face'
+      ELSEIF TempTable.LastTyp = 2 THEN
+                  ExcelReport.LastTypeContact    := 'Phone Contact'
+          ELSEIF TempTable.LastTyp  = 3 THEN
+                      ExcelReport.LastTypeContact    := 'No Contact yet'
+              ENDIF
+      IF TempTable.Finalise = 1 THEN
+         ExcelReport.ScreenerFinalised := 'Yes'
+      ELSEIF TempTable.Finalise = 2 THEN
+             ExcelReport.ScreenerFinalised := 'No'
+          ENDIF
+      ExcelReport.PiaacStatus        :=   TempTable.VMLatestStatus
+      ExcelReport.LastDispositionCode :=  TempTable.DispCode
+      ExcelReport.Write
+  ENDDO
+  ExcelReport.close
+  Rsult1 := RUN('COPYFILE C:\CSO\PIAAC\Pilot\Reports\InformationSummary.csv C:\CSO\PIAAC\Pilot\Reports\InformationSummary'+date1+'.csv')
+  Rsult1 := RUN('DELETEFILE C:\CSO\PIAAC\Pilot\Reports\InformationSummary.csv')
+  ViewRpt
+ENDPROCEDURE
+
+{2.3 - Status Dispostion Report}
+PROCEDURE OpenAlloc
+      Reslt:= RUN('C:\CSO\PIAAC\Pilot\Reports\CaseDispositions'+date1+'.csv')
+ENDPROCEDURE
+
+DIALOGBOX  ViewAllocRpt "Click Yes if you would like to open the Report "
+  SIZE = (400,100)
+  TEXT = ('@>Do you want to open the Report now ?',10,20)
+  BUTTON SomeButtons
+    CAPTION = 'Yes'
+    VALUE = OK
+    onpress = OpenAlloc
+    ready=yes
+  BUTTON SomeButtons
+    CAPTION = 'No'
+    VALUE = Cancel
+
+PROCEDURE CallWklyRpt
+  FillRepData
+  WklyAllocOut.OPEN
+  FOR Count := 1 TO TempTable.FORMCOUNT DO
+      TempTable.READNEXT
+      WklyAllocOut.SequenceNo    := str(Temptable.RefWk)
+      WklyAllocOut.CoordinatorNo := TempTable.TeamID
+      WklyAllocOut.InterviewerNo := TempTable.Intvwrno
+      WklyAllocOut.BlockNo       := TempTable.BlockNo
+      WklyAllocOut.LduNo         := TempTable.Ldu_No
+      WklyAllocOut.LastVisit     := Temptable.LastVis
+      WklyAllocOut.LastDay       := TempTable.LastDay
+      WklyAllocOut.LastDate      := datetostr(TempTable.LastDat)
+      WklyAllocOut.LastTime      := timetostr(TempTable.LastTim)
+      IF TempTable.LastTyp = 1 THEN
+         WklyAllocOut.LastTypeofContact     := 'Face to Face'
+      ELSEIF TempTable.LastTyp = 2 THEN
+             WklyAllocOut.LastTypeofContact    := 'Phone Contact'
+          ELSEIF TempTable.LastTyp  = 3 THEN
+                 WklyAllocOut.LastTypeofContact    := 'No Contact yet'
+              ENDIF
+      WklyAllocOut.AdminDispositionCode :=  TempTable.DispCode
+      WklyAllocOut.Write
+  ENDDO
+  WklyAllocOut.close
+  Rsult1 := RUN('COPYFILE C:\CSO\PIAAC\Pilot\Reports\CaseDispositions.csv C:\CSO\PIAAC\Pilot\Reports\CaseDispositions'+date1+'.csv')
+  Rsult1 := RUN('DELETEFILE C:\CSO\PIAAC\Pilot\Reports\CaseDispositions.csv')
+  ViewAllocRpt
+ENDPROCEDURE
+
+{2.5 Summary by block}
+PROCEDURE CrWkRport
+  WklySumOut.OPEN
+      IF (TeamNo = PAdmin.MainAdmin.TeamID) THEN
+        WklySumOut.BlockNo      := FORMAT(str(Prevblock),4,LEFT, ' ')
+        WklySumOut.SequenceNo   := FORMAT(str(PrevRefWk),2,right,'0')
+        WklySumOut.Complete     := FORMAT(STR(PrevCompl),2,right,'0')
+        WklySumOut.Refusals     := FORMAT(STR(PrevRefus),2,right,'0')
+        WklySumOut.Ineligible   := FORMAT(STR(PrevInelgs),2,right,'0')
+        WklySumOut.Vacants      := FORMAT(STR(PrevVac),2,right,'0')
+        WklySumOut.Disability   := FORMAT(STR(PrevDisab),2,right,'0')
+        WklySumOut.Appointment  := FORMAT(STR(PrevApt),2,right,'0')
+        WklySumOut.CallBack     := FORMAT(STR(PrevCallB),2,right,'0')
+        WklySumOut.TotalCases   := FORMAT(STR(PrevTot),2,right,'0')
+        WklySumOut.CompleteAdmin   := FORMAT(STR(PrevComp),2,right,'0')
+        WklySumOut.CompletePiaac   := FORMAT(STR(PrevComplP),2,right,'0')
+        WklySumOut.ScrCompleteOnly := FORMAT(STR(PrevScrOnly),2,right,'0')
+        WklySumOut.VMPaused     := FORMAT(STR(PrevInComp),2,right,'0')
+        WklySumOut.WRITE
+      eNDif
+  WklySumOut.close
+ENDPROCEDURE
+
+PROCEDURE Init  {initalize totals}
+  CompAdm    := 0
+  CompIntrv  := 0
+  CompIntrvp := 0
+  ScrOnly    := 0
+  InComp     := 0
+  Refuser    := 0
+  Ineliger   := 0
+  Vacanter   := 0
+  Disabler   := 0
+  Appointmtr := 0
+  CallBacker := 0
+  CTOT       := 0
+ENDPROCEDURE
+
+PROCEDURE IntStat
+  FOR I := 1 TO 10 DO
+     IF (PAdmin.HHCall.CallGrid.Call[I].NewVisit = NO) THEN
+        CASE PAdmin.HHCall.CallGrid.Call[I].Interim OF
+             1       : Appointmtr := Appointmtr + 1
+             2,3,4,5,6 : CallBacker := CallBacker + 1
+             7,8       : CASE PAdmin.FinAdmin.LastScr OF
+                            C1,{ 1. Compl - 1 samp pers sel}
+                          {  C2,{ 2. Compl - 2 samp pers sel}    }
+                            PB { 3. Partial compl break-off}   : CompIntrv := CompIntrv + 1
+                            RH,{ 4. Refusal - hhld member}
+                            RG,{ 5. Refusal - gatekeeper}
+                            MX,{16. Maximum number of calls}
+                            TA {18. Temporarily absent}         : Refuser := Refuser + 1
+                            CN,{14. Complete - no elg pers}
+                            DA {20. Duplication}                : Ineliger := Ineliger + 1
+                            UL,{15. Unable to locate dwelling}
+                            DC,{17. Dwelling under constructn}
+                            VU,{19. Vacant dwelling}
+                            AN {21. Address not a dwelling}     : Vacanter := Vacanter + 1
+                            LP,{ 6. Language problem}
+                            LM,{ 7. Learning/mental disability}
+                            HI,{ 8. Hearing impairment}
+                            BV,{ 9. Blindness/visual impairment}
+                            SI,{10. Speech impairment}
+                            PD,{11. Physical disability}
+                            OD,{12. Other disability}
+                            OU {13. Other (unspecified)}        : Disabler := Disabler + 1
+                      ENDCASE
+        ENDCASE
+        IF (PAdmin.HHCall.CallGrid.Call[I].Exercise = 1) then           {screener - exercise finished}
+            CompIntrv := CompIntrv + 1
+        endif
+        IF (PAdmin.HHCall.CallGrid.Call[I].Exercise = 1) AND (PAdmin.FinAdmin.VMLatestStatus = EMPTY) then
+           CompAdm:= CompAdm + 1                                    {check this case}
+        Endif
+        IF (PAdmin.FinAdmin.VMLatestStatus = 'Finished') then       {piaac finished}
+           CompIntrvP := CompIntrvP + 1
+        Endif
+        if (PAdmin.HHCall.CallGrid.Call[I].Screener = 1) and (PAdmin.FinAdmin.VMLatestStatus = 'Paused') AND
+           (PAdmin.HHCall.CallGrid.Call[I].Exercise <> 1) THEN          {incompleted}
+           InComp := InComp + 1
+        endif
+        if (PAdmin.HHCall.CallGrid.Call[I].Screener = 1)
+           and (PAdmin.HHCall.CallGrid.Call[I].Exercise = EMPTY) THEN    {Screeener only complete}
+           ScrOnly := ScrOnly + 1
+        endif
+     ENDIF
+  ENDDO
+  CTot := 0
+  CTot := CompIntrv + Refuser + Ineliger + Vacanter + Disabler + Appointmtr + CallBacker
+ENDPROCEDURE
+
+PROCEDURE OpenSumm
+      Reslt:= RUN('C:\CSO\PIAAC\Pilot\Reports\SummaryStatus'+date1+'.CSV')
+ENDPROCEDURE
+
+DIALOGBOX  ViewSummRpt "Click Yes if you would like to open the Report "
+  SIZE = (400,100)
+  TEXT = ('@>Do you want to open the Report now ?',10,20)
+  BUTTON SomeButtons
+    CAPTION = 'Yes'
+    VALUE = OK
+    onpress = OpenSumm
+    ready=yes
+  BUTTON SomeButtons
+    CAPTION = 'No'
+    VALUE = Cancel
+
+PROCEDURE LaunchWkSum
+  PAdmin.OPEN
+  Padmin.READNEXT
+  IF PAdmin.ResultOK THEN
+     REPEAT
+       REPEAT
+         PrevBlock := val(PAdmin.MainAdmin.BlockNo)
+         PrevInt   := Padmin.MainAdmin.IntvwrNo
+         PrevRefWk := (PAdmin.MainAdmin.RefWk)
+         IntStat
+         Padmin.READNEXT
+       UNTIL ((PrevRefWk <> PAdmin.MainAdmin.RefWk) or (PrevBlock <> val(PAdmin.MainAdmin.BlockNo)))
+       PrevComp    := CompAdm
+       PrevCompl   := CompIntrv
+       PrevComplP   := CompIntrvP
+       PrevScrOnly := ScrOnly
+       PrevInComp  := InComp
+       PrevRefus   := Refuser
+       PrevInelgs  := Ineliger
+       PrevVac     := Vacanter
+       PrevDisab   := Disabler
+       PrevApt     := Appointmtr
+       PrevCallB   := CallBacker
+       PrevSamp    := Sampler
+       PrevRep     := Replacer
+       PrevTot     := CTot
+       CrWkRport
+       Init
+     UNTIL (padmin.EOF)
+  ENDIF
+  Rsult1 := RUN('COPYFILE C:\CSO\PIAAC\Pilot\Reports\SummaryStatus.CSV C:\CSO\PIAAC\Pilot\Reports\SummaryStatus'+date1+'.CSV')
+  Rsult1 := RUN('DELETEFILE C:\CSO\PIAAC\Pilot\Reports\SummaryStatus.CSV')
+  ViewSummRpt
+  PAdmin.close
+ENDPROCEDURE
+
+{2.6 - Open Reports folder}
+
+DIALOGBOX AnyCSVLook
+  LOOKUP AnyCSVFile
+    HEADER = YES
+    SEPARATOR = YES
+    INDICATOR = NO
+    FONTNAME = 'Courier New'
+  BUTTON SomeButtons
+    CAPTION = 'OK'
+
+PROCEDURE OpenRep
+  Reslt:= RUN(Name, WAIT)
+  AnyCSVFile.close
+ENDPROCEDURE
+
+{3.1 - Update team ID Number}
+
+DIALOGBOX EnterTeamID "Update TeamID Number"
+  ESCAPE = No
+  SIZE = (400, 120)
+  CONTROL CoorID
+    LABEL = ('Please update your TeamID Number:',25,30)
+    POSITION = (260,30)
+  BUTTON SomeButtons
+    CAPTION = 'OK'
+    POSITION = (80, 80)
+    VALUE = OK
+  BUTTON SomeButtons
+    CAPTION = 'Cancel'
+    POSITION = (230, 80)
+    VALUE = Cancel
+
+
+PROCEDURE InterProc
+  ValidFlag := 'N'
+  IF SomeButtons = OK THEN
+     IF (CoorID = Numeric) AND (LEN(CoorID) = 2) AND
+        ((CoorID >= '01') AND (CoorID <= '04')) THEN
+        ValidFlag := 'Y'
+     ELSE
+        DISPLAY('Invalid Team number - Please enter a 2 digit numeric value between 01 and 04.', WAIT)
+     ENDIF
+  ELSE
+     stop := yes
+  ENDIF
+ENDPROCEDURE
+
+PROCEDURE GetLkp
+  Rsult1 := RUN('DELETEFILE C:\CSO\PIAAC\Pilot\Lookups\PiaacLkpCoor.bdb')
+  PiaacLkpCoorO.OPEN {Output file of new Coordinator file}
+  MainPiaacLkp.OPEN {Main Lookup}
+  Display ('Updating the Household Information file for TeamID: '+TeamNo+ '    Please wait...            ')
+  REPEAT
+    IF TeamNo = MainPiaacLkp.TeamID THEN
+       PiaacLkpCoorO.Write
+    ENDIF
+    MainPiaacLkp.ReadNext
+  UNTIL MainPiaacLkp.eof
+  Display ('Lookup file for TeamID: '+TeamNo+ ' created', WAIT)
+  PiaacLkpCoorO.close
+  MainPiaacLkp.close
+ENDPROCEDURE
+
+PROCEDURE CoorDets
+     REPEAT
+       EnterTeamId
+       InterProc
+     UNTIL (ValidFlag = 'Y') OR (SomeButtons = Cancel)
+     IF (SomeButtons <> Cancel) then
+        TeamNo := CoorID
+        CoorNumberO.OPEN
+        CoorNumberO.TeamID := CoorID
+        CoorNumberO.WRITE
+        CoorNumberO.CLOSE
+        GetLkp
+     else
+        Display ('You must enter a valid TeamID number before proceeding - Please exit application and re-open.', wait)
+     endif
+ENDPROCEDURE
+
+PROCEDURE GetTeamNo
+  IF FileExists('C:\CSO\PIAAC\Pilot\Lookups\TeamIDNumber.bdb') THEN
+     CoorNumberI.OPEN
+     CoorNumberI.READNEXT
+     IF (CoorNumberI.RESULTOK) AND (CoorNumberI.TeamID <> EMPTY) THEN
+        TeamNo := CoorNumberI.TeamID
+        IF FileExists('C:\CSO\PIAAC\Pilot\Lookups\PiaacLkpCoor.bdb') THEN
+           PiaacLkpCoorI.OPEN                   {Check that LOOKUP MATCHES current inerviewer Number}
+           PiaacLkpCoorI.ReadNEXT
+           PiaacLkpCoorI.CLOSE
+           IF (TeamNo <> PiaacLkpCoorI.TeamID) THEN
+              GetLkp
+           ENDIF
+        ELSE
+           GetLkp
+        ENDIF
+     ELSE
+        CoorNumberI.CLOSE
+        CoorDets
+     ENDIF
+  ELSE
+     CoorDets
+  ENDIF
+ENDPROCEDURE
+
+PROCEDURE UpdateTeamNo
+  CoorNumberI.OPEN
+  CoorNumberI.READNEXT
+  CoorID := CoorNumberI.TeamID
+  CoorNumberI.close
+  REPEAT
+    EnterTeamId
+    InterProc
+  UNTIL (ValidFlag = 'Y') OR (SomeButtons = Cancel)
+  IF (SomeButtons <> Cancel) THEN
+     PiaacLkpCoorI.CLOSE
+     PiaacLkpCoorO.CLOSE
+     MainPiaacLkp.CLOSE
+     CoorNumberI.ERASE
+     CoorNumberO.OPEN
+     CoorNumberO.TeamID := CoorID
+     TeamNo := CoorID
+     CoorNumberO.WRITE
+     CoorNumberO.CLOSE
+     GetLkp
+  ENDIF
+ENDPROCEDURE
+
+
+
+
+
+
+PROCEDURE DatTime
+    SDate := DateToStr(SysDate)
+    Day1  := SUBSTRING(SDate,1,2)
+    Mth1  := SUBSTRING(SDate,4,2)
+    Yr1   := SUBSTRING(SDate,7,4)
+    Date1 := Day1 + Mth1 + Yr1
+    STime := TimeToStr(SysTime)
+    Hr1   := SUBSTRING(STime,1,2)
+    Min1  := SUBSTRING(STime,4,2)
+    Sec1  := SUBSTRING(STime,7,2)
+    Time1 := Hr1 + Min1 + Sec1
+ENDPROCEDURE
+
+
+{5.1 - Application Information}
+
+
+
+PROCEDURE OpMan
+      Reslt:= RUN('C:\CSO\PIAAC\Pilot\CoordinatorAppUserManual.docx')
+ENDPROCEDURE
+
+{5.2 - Version}
+
+DIALOGBOX CSO "Central Statistics Office"
+  SIZE = (300, 200)
+  TEXT = ('@>Title: Coordinators Application',10,20)
+  TEXT = ('@>Version: 1.2',10,50)
+  TEXT = ('@>Date: 23-August-Pilot',10,70)
+  TEXT = ('@>© Central Statistics Office Pilot',10,100)
+  BUTTON Oneokaybutton
+    CAPTION = 'OK'
+    VALUE = OK
+
+{Brings Excel to the front} {Added 12/08/11 by CMD}
+
+
+
+{---------------------------------------------------------------------------------------------------}
+
+MANIPULATE
+  CreateMenu
+  GetTeamNo
+  {AppendData}
+  REPEAT
+    Reslt:= MyMenu.MENU('Alt-F4 - Quit')
+    IF (functkey <> altx) AND (Reslt = 0) THEN
+      CASE program OF
+        'OpLkp'         : OpenLkp
+        'ViewComp'      : ViewComplete
+        'reach'         : ReachProc
+        'HomePage'      : HomePageProc
+        'InCompl'       : ViewInComplete
+        'UMan'          : OpMan
+        'InfoBox'       : CSO
+     ENDCASE
+    ENDIF
+    {Launch 'Survey Homepage' menu option}
+    IF Program = 'AllCases' THEN
+       iNTnO := '*'
+       SeqNum := '*'
+       REPEAT
+         EnterIntNo
+         ChkRefAllCases
+       UNTIL ((VALIDFLAGInt = 'Y') and (ValidFlagSeq = 'Y')) OR (SomeButtons = Cancel)
+       IF (ValidFlagInt = 'Y') and (ValidFlagSeq = 'Y') THEN
+          OpenAllCases
+       ENDIF
+    ENDIF
+    {Launch 'Main Excel - summary report' menu option}
+    IF program = 'XlReport' THEN
+       DatTime
+       XlRpt
+    ENDIF
+    {Launch 'Disposition codes detail' menu option}
+    IF program = 'WkAlloc' THEN
+       DatTime
+       CallWklyRpt
+    ENDIF
+    {Launch Summary of cases by Block}
+    IF program = 'WkSumm' THEN
+       DatTime
+       LaunchWkSum
+    ENDIF
+    {Update tEAM ID Number}
+    IF Program = 'EnterID' THEN
+       UpdateTeamNo
+    ENDIF
+   {'View Reports' Option - opens report folder for user to select which file (.csv to open}
+    IF Program = 'RepFolder' THEN
+       Name := SELECTFILE('Select the Report you want to open','C:\CSO\PIAAC\Pilot\Reports\','csv files (*.csv)|*.csv', fixed)
+       IF Name <> EMPTY THEN
+          AnyCSVFile.OPEN(Name)
+          OpenRep
+       ENDIF
+       Name:= EMPTY
+    ENDIF
+    IF Program = 'TransLog' THEN
+       Name := SELECTFILE('Select the Report you want to open','C:\CSO\PIAAC\Pilot\intdatalogs\','csv files (*.csv)|*.csv', fixed)
+       IF Name <> EMPTY THEN
+          AnyCSVFile.OPEN(Name)
+          OpenRep
+       ENDIF
+       Name:= EMPTY
+    ENDIF
+    IF Program = 'AdminDocs' THEN
+       Name := SELECTFILE('Select the Admin document you want to open','C:\CSO\PIAAC\Pilot\Validations\','xlsx files (*.xlsx)|*.*', fixed)
+       IF Name <> EMPTY THEN
+          AnyCSVFile.OPEN(Name)
+          OpenRep
+       ENDIF
+       Name:= EMPTY
+    ENDIF
+    IF functkey = altf4 THEN
+       IF CONFIRM('Are you sure you want to quit?',NO) THEN
+          Stop := Yes
+       ELSE
+          Stop := No
+       ENDIF
+    ENDIF
+  UNTIL (functkey = altf4) AND (Stop = yes)
