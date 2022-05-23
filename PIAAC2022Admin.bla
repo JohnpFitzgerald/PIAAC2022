@@ -21,8 +21,8 @@ DATAMODEL PiaacAdmin2022 "PIAAC Administration Pilot"
    ATTRIBUTES = REFUSAL, DONTKNOW
 
    USES
-      ScrLookUp   'C:\CSO\Piaac\Pilot\Piaac2022Scr',         {Uses the screener as lookup so PersId can be read into this database}
-      SourceData  'C:\CSO\Piaac\Pilot\LookUps\PIAACLookupInt'   {Reads lookup of households provided by business area}
+      ScrLookUp   'C:\CSO\Piaac\Pilot2022\Piaac2022Scr',         {Uses the screener as lookup so PersId can be read into this database}
+      SourceData  'C:\CSO\Piaac\Pilot2022\LookUps\PIAACLookupInt'   {Reads lookup of households provided by business area}
 
    INCLUDE "PiaacLibrary.inc"
    INCLUDE "MainAdmin.inc"
