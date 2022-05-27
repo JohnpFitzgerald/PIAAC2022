@@ -1,0 +1,64 @@
+SETTINGS
+  DESCRIPTION = 'ASCII to BLAISE'
+  INPUTPATH = 'C:\CSO\piaac\pilot2022\Lookups\'
+  OUTPUTPATH = 'C:\CSO\piaac\pilot2022\Lookups\'
+
+USES
+  InputMeta 'C:\CSO\piaac\pilot2022\Lookups\PIAACLookup'
+
+
+INPUTFILE InputFile1: InputMeta ('PIAACLookup.csv', ASCII)
+   SETTINGS
+     SEPARATOR = ','
+     headerline= no
+
+OUTPUTFILE OutputFile1: InputMeta ('PIAACLookupCoor', BLAISE)
+OUTPUTFILE OutputFile2: InputMeta ('PIAACLookupCoor2', BLAISE)
+OUTPUTFILE OutputFile3: InputMeta ('PIAACLookupCoor3', BLAISE)
+
+
+
+MANIPULATE
+    IF InputFile1.TeamID = '1' THEN
+       IF (LEN(InputFile1.IntvwrNo) = 1) THEN
+          OutputFile1.IntvwrNo := '00'+InputFile1.IntvwrNo
+       ELSEIF (LEN(InputFile1.IntvwrNo) = 2) THEN
+               OutputFile1.IntvwrNo := '0'+InputFile1.IntvwrNo
+           ELSE
+               OutputFile1.IntvwrNo := InputFile1.IntvwrNo
+           ENDIF
+    IF LEN(InputFile1.TeamID) = 1 THEN
+       OutputFile1.TeamID := '0' + InputFile1.TeamID
+    ELSE
+       OutputFile1.TeamID := InputFile1.TeamID
+    ENDIF
+       OutputFile1.WRITE
+    ELSEIF InputFile1.TeamID = '2' THEN
+           IF (LEN(InputFile1.IntvwrNo) = 1) THEN
+               OutputFile1.IntvwrNo := '00'+InputFile1.IntvwrNo
+           ELSEIF (LEN(InputFile1.IntvwrNo) = 2) THEN
+                   OutputFile2.IntvwrNo := '0'+InputFile1.IntvwrNo
+               ELSE
+                   OutputFile2.IntvwrNo := InputFile1.IntvwrNo
+               ENDIF
+           IF LEN(InputFile1.TeamID) = 1 THEN
+              OutputFile2.TeamID := '0' + InputFile1.TeamID
+           ELSE
+              OutputFile2.TeamID := InputFile1.TeamID
+           ENDIF
+           OutputFile2.WRITE
+       ELSEIF InputFile1.TeamID = '3' THEN
+              IF (LEN(InputFile1.IntvwrNo) = 1) THEN
+                  OutputFile3.IntvwrNo := '00'+InputFile1.IntvwrNo
+              ELSEIF (LEN(InputFile1.IntvwrNo) = 2) THEN
+                      OutputFile3.IntvwrNo := '0'+InputFile1.IntvwrNo
+                  ELSE
+                      OutputFile3.IntvwrNo := InputFile1.IntvwrNo
+              ENDIF
+              IF LEN(InputFile1.TeamID) = 1 THEN
+                  OutputFile3.TeamID := '0' + InputFile1.TeamID
+              ELSE
+                  OutputFile3.TeamID := InputFile1.TeamID
+              ENDIF
+              OutputFile3.WRITE
+           ENDIF

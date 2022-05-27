@@ -1,0 +1,31 @@
+SETTINGS
+  DESCRIPTION = 'ASCII to BLAISE'
+  INPUTPATH = 'C:\CSO\piaac\pilot2022\Lookups\'
+  OUTPUTPATH = 'C:\CSO\piaac\pilot2022\Lookups\'
+
+USES
+  InputMeta 'C:\CSO\piaac\pilot2022\Lookups\PIAACLookup'
+
+
+INPUTFILE InputFile1: InputMeta ('PIAACLookup.csv', ASCII)
+   SETTINGS
+     SEPARATOR = ','
+     headerline= no
+
+OUTPUTFILE OutputFile1: InputMeta ('PIAACLkpCoor', BLAISE)
+
+MANIPULATE
+    IF (LEN(InputFile1.IntvwrNo) = 1) THEN
+        OutputFile1.IntvwrNo := '00'+InputFile1.IntvwrNo
+    ELSEIF (LEN(InputFile1.IntvwrNo) = 2) THEN
+            OutputFile1.IntvwrNo := '0'+InputFile1.IntvwrNo
+        ELSE
+            OutputFile1.IntvwrNo := InputFile1.IntvwrNo
+        ENDIF
+    IF LEN(InputFile1.TeamID) = 1 THEN
+       OutputFile1.TeamID := '0' + InputFile1.TeamID
+    ELSE
+       OutputFile1.TeamID := InputFile1.TeamID
+
+    ENDIF
+    OutputFile1.WRITE
