@@ -1,0 +1,5 @@
+DATAMODEL InterviewerNumber
+
+FIELDS
+    IntvwrNo    : string[3]
+ENDMODEL

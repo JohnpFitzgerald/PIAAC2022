@@ -1,0 +1,26 @@
+{Author Name       : Caroline Donegan
+ Date written      : Nov 2010
+ Version           : 0.1
+
+ Description       : PIAAC Survey Creation of Lookup File
+ Notes             : This file creates PiaacLookukp.bmi which will hold data from PiaacLookup.asc in the blaise database PiaacLookup.bdb
+                     & associated files.
+
+Dependencies       : ConvertDataToPiaacLookup.Man is used to convert the data from the .asc to the .bdb file
+
+****************************************************************************************************************************************}
+DATAMODEL PIAACLookupInt "PIAACLookupInt"
+
+    PRIMARY
+       BlockNo,LduNo
+    SECONDARY
+       BlockNo
+
+    FIELDS
+       BlockNo     : STRING[4]
+       LduNo      : STRING[3]
+       SequenceNo  : 1..14
+       Address     : STRING[120]
+       IntvwrNo    : STRING[3]
+       TeamID      : STRING[2]
+ENDMODEL
