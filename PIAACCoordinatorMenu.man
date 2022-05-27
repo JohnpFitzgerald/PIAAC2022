@@ -2,10 +2,10 @@ PROCESS PIAACMenu "COORDINATORS Menu for PIAAC Pilot"
 
 {------ FILE SECTION ------------}
 USES
-  Piaac2022Admin    'C:\CSO\PIAAC\Pilot\Piaac2022Admin'
-  Piaac2022Scr      'C:\CSO\PIAAC\Pilot\Piaac2022Scr'
-  Piaac2022Lkp      'C:\CSO\PIAAC\Pilot\lookups\PiaacLkpCoor'
-  TeamIDNumber      'C:\CSO\PIAAC\Pilot\lookups\TeamIDNumber'
+  Piaac2022Admin    'C:\CSO\PIAAC\Pilot2022\Piaac2022Admin'
+  Piaac2022Scr      'C:\CSO\PIAAC\Pilot2022\Piaac2022Scr'
+  Piaac2022Lkp      'C:\CSO\PIAAC\Pilot2022\lookups\PiaacLkpCoor'
+  TeamIDNumber      'C:\CSO\PIAAC\Pilot2022\lookups\TeamIDNumber'
 DATAMODEL MenuDescription
     INCLUDE "PlusMenu.inc"
     FIELDS
@@ -19,12 +19,12 @@ ENDMODEL
 
 DATAMODEL TempFile                         {TempFile is used to display fields in the table                                }
     PRIMARY                                {It is updated from 3 soucres                                                   }
-      BlockNo, Ldu_No                      { - Lookup for HH identifier                                                    }
+      BlockNo, LduNo                      { - Lookup for HH identifier                                                    }
     SECONDARY                              { - Screener for person selected, appointments etc.                             }
       SortField                            { - Admin for summary details                                                   }
     FIELDS
       BlockNo        : STRING [4]
-      Ldu_No         : STRING [3]
+      LduNo         : STRING [3]
       IntvwrNo       : STRING [3]
       RefWk          : 1..17
       Sample         : STRING [13], EMPTY
@@ -77,7 +77,7 @@ DATAMODEL VisitDetailTable
     TeamId         : STRING[2]
     IntvwrNo       : STRING [3]
     BlockNo        : STRING [4]
-    Ldu_No         : STRING [3]
+    LduNo         : STRING [3]
     ContName       : STRING [25]
     Address        : STRING [150], EMPTY
     PersID         : STRING [11]
@@ -95,25 +95,12 @@ DATAMODEL OneLine
      OneLine: STRING [110]
 ENDMODEL
 
-DATAMODEL AllocReport
-   FIELDS
-     SequenceNo         : STRING [2]
-     CoordinatorNo      : STRING [2]
-     InterviewerNo      : String [3]
-     BlockNo            : STRING [4]
-     LduNo              : STRING [3]
-     LastVisit          : STRING [4]
-     LastDay            : STRING [9]
-     LastDate           : STRING [10]
-     LastTime           : STRING [5]
-     LastTypeofContact  : STRING [14]
-     AdminDispositionCode     : STRING [50]
-ENDMODEL
+
 
 DATAMODEL SummaryReport
    FIELDS
      BlockNo          : STRING [4]
-     SequenceNo       : STRING [2]
+     SeqNo       : STRING [2]
      Complete         : STRING [2]
      Refusals         : STRING [2]
      Ineligible       : STRING [2]
@@ -128,10 +115,23 @@ DATAMODEL SummaryReport
      ScrCompleteOnly  : STRING [2]
      VMPaused         : STRING [2]
 ENDMODEL
-
+DATAMODEL AllocReport
+   FIELDS
+     SeqNo         : STRING [2]
+     CoordinatorNo      : STRING [2]
+     InterviewerNo      : String [3]
+     BlockNo            : STRING [4]
+     LduNo              : STRING [3]
+     LastVisit          : STRING [4]
+     LastDay            : STRING [9]
+     LastDate           : STRING [10]
+     LastTime           : STRING [5]
+     LastTypeofContact  : STRING [14]
+     AdminDispositionCode     : STRING [50]
+ENDMODEL
 DATAMODEL QuestSummary
    FIELDS
-     SequenceNo         : STRING [2]
+     SeqNo         : STRING [2]
      CoordinatorNo      : STRING [2]
      InterviewErNo      : STRING [3]
      BlockNo            : STRING [4]
@@ -156,25 +156,25 @@ ENDMODEL
      SETTINGS
        OPEN = NO
 
-  UPDATEFILE PAdmin: Piaac2022Admin ('C:\CSO\PIAAC\Pilot\Piaac2022Admin', BLAISE)
+  UPDATEFILE PAdmin: Piaac2022Admin ('C:\CSO\PIAAC\Pilot2022\Piaac2022Admin', BLAISE)
      SETTINGS
         OPEN = NO
 
-  UPDATEFILE Piaac: Piaac2022Scr ('C:\CSO\PIAAC\Pilot\Piaac2022Scr', BLAISE)
+  UPDATEFILE Piaac: Piaac2022Scr ('C:\CSO\PIAAC\Pilot2022\Piaac2022Scr', BLAISE)
      SETTINGS
         OPEN = NO
 
    {Lookup file is input only as it is not updated by the interviewer}
-  INPUTFILE MainPiaacLkp     : Piaac2022Lkp ('C:\CSO\PIAAC\Pilot\Lookups\PiaacLookup', BLAISE)
+  INPUTFILE MainPiaacLkp     : Piaac2022Lkp ('C:\CSO\PIAAC\Pilot2022\Lookups\PiaacLookup', BLAISE)
      SETTINGS
         OPEN = NO
 
-  INPUTFILE CoorNumberI : TeamIDNumber('C:\CSO\PIAAC\Pilot\Lookups\TeamIDNumber', BLAISE)
+  INPUTFILE CoorNumberI : TeamIDNumber('C:\CSO\PIAAC\Pilot2022\Lookups\TeamIDNumber', BLAISE)
      SETTINGS
         OPEN = NO
 
  {Lookup file containing only specific Interviewer cases}
-  INPUTFILE PiaacLkpCoorI : Piaac2022Lkp('C:\CSO\PIAAC\Pilot\Lookups\PiaacLkpCoor', BLAISE)
+  INPUTFILE PiaacLkpCoorI : Piaac2022Lkp('C:\CSO\PIAAC\Pilot2022\Lookups\PiaacLkpCoor', BLAISE)
      SETTINGS
         OPEN = NO
 
@@ -185,42 +185,41 @@ ENDMODEL
   TEMPORARYFILE TempInComplete : TempFile            {Temporary file containing the Completed cases}
   TEMPORARYFILE MyMenu       : MenuDescription     { Menu Description }
 
-  OUTPUTFILE CoorNumberO : TeamIDNumber('C:\CSO\PIAAC\Pilot\Lookups\TeamIDNumber', BLAISE)
+  OUTPUTFILE CoorNumberO : TeamIDNumber('C:\CSO\PIAAC\Pilot2022\Lookups\TeamIDNumber', BLAISE)
      SETTINGS
         OPEN = NO
 
-  OUTPUTFILE PiaacLkpCoorO : Piaac2022Lkp('C:\CSO\PIAAC\Pilot\Lookups\PiaacLkpCoor', BLAISE)
+  OUTPUTFILE PiaacLkpCoorO : Piaac2022Lkp('C:\CSO\PIAAC\Pilot2022\Lookups\PiaacLkpCoor', BLAISE)
      SETTINGS
         OPEN = NO
 
-  OUTPUTFILE LookupOut : Piaac2022Lkp ('C:\CSO\PIAAC\Pilot\Reports\PiaacLookup.csv',ASCII)
-     SETTINGS
-        OPEN = NO
-        HEADERLINE = YES
-        SEPARATOR  = ','
-        DELIMITER = '"'
-
-
-  OUTPUTFILE WklySumOut : SummaryReport ('C:\CSO\PIAAC\Pilot\Reports\SummaryStatus.csv',ASCII)
+  OUTPUTFILE LookupOut : Piaac2022Lkp ('C:\CSO\PIAAC\Pilot2022\Reports\PiaacLookup.csv',ASCII)
      SETTINGS
         OPEN = NO
         HEADERLINE = YES
         SEPARATOR  = ','
         DELIMITER = '"'
 
-  OUTPUTFILE WklyAllocOut : AllocReport ('C:\CSO\PIAAC\Pilot\reports\CaseDispositions.csv', ASCII)
+
+  OUTPUTFILE WklySumOut : SummaryReport ('C:\CSO\PIAAC\Pilot2022\Reports\SummaryStatus.csv',ASCII)
      SETTINGS
         OPEN = NO
         HEADERLINE = YES
         SEPARATOR  = ','
         DELIMITER = '"'
 
-  OUTPUTFILE ExcelReport : QuestSummary('C:\CSO\PIAAC\Pilot\reports\InformationSummary.csv', ASCII)
+  OUTPUTFILE WklyAllocOut : AllocReport ('C:\CSO\PIAAC\Pilot2022\reports\CaseDispositions.csv', ASCII)
      SETTINGS
         OPEN = NO
         HEADERLINE = YES
         SEPARATOR  = ','
-        DELIMITER = '"'
+        DELIMITER = '"'   
+  OUTPUTFILE ExcelReport : QuestSummary('C:\CSO\PIAAC\Pilot2022\reports\InformationSummary.csv', ASCII)
+     SETTINGS
+        OPEN = NO
+        HEADERLINE = YES
+        SEPARATOR  = ','
+        DELIMITER = '"'          
 
 AUXFIELDS
   Stop          : (Yes, No)
@@ -414,7 +413,7 @@ PROCEDURE FillSortFieldComp {To allow data in each field to be sorted for Comple
   CASE SortAUXField4 OF
     Rfwk        : TempComplete.SortField := STR(TempComplete.RefWk)
     BlockNumber : TempComplete.SortField := (TempComplete.BlockNo)
-    LduNumber   : TempComplete.SortField := (TempComplete.Ldu_No)
+    LduNumber   : TempComplete.SortField := (TempComplete.LduNo)
     PersonID    : TempComplete.SortField := (TempComplete.PersId)
   ENDCASE
 ENDPROCEDURE
@@ -426,7 +425,7 @@ ENDPROCEDURE
 PROCEDURE FillAdmData {Data from the Admin Datamodel}
   TempTable.INITRECORD
   TempTable.BlockNo        := PAdmin.MainAdmin.BlockNo
-  TempTable.Ldu_No         := PAdmin.MainAdmin.LduNo
+  TempTable.LduNo         := PAdmin.MainAdmin.LduNo
   Temptable.RefWk          := PAdmin.MainAdmin.RefWk
   TempTable.IntvwrNo       := PAdmin.MainAdmin.IntvwrNo
   TempTable.TeamId         := PAdmin.MainAdmin.TeamID
@@ -651,42 +650,32 @@ PROCEDURE FillLkpTable {Fill the lookup table - and writes an output excel file 
   WHILE (PiaacLkpCoorI.RESULTOK) DO
         TempLkp.INITRECORD
         TempLkp.BlockNo  := PiaacLkpCoorI.BlockNo
-        TempLkp.Ldu_No   := PiaacLkpCoorI.Ldu_No
-        TempLkp.RefWk    := PiaacLkpCoorI.RefWK
-        TempLkp.Sample   := PiaacLkpCoorI.Sample
+        TempLkp.LduNo    := PiaacLkpCoorI.LduNo
+        TempLkp.RefWk    := PiaacLkpCoorI.SequenceNo
         TempLkp.Address  := PiaacLkpCoorI.Address
         TempLkp.TeamID   := PiaacLkpCoorI.tEAMid
         TempLkp.Intvwrno := PiaacLkpCoorI.Intvwrno
-        TempLkp.BookID_PPC  := PiaacLkpCoorI.BookID_PPC
-        TempLkp.BookID_PP1  := PiaacLkpCoorI.BookID_PP1
-        TempLkp.BookID_PP2  := PiaacLkpCoorI.BookID_PP2
-        TempLkp.BookID_PRC  := PiaacLkpCoorI.BookID_PRC
         LookupOut.BlockNo    :=  PiaacLkpCoorI.BlockNo
-        LookupOut.LDU_No     :=  PiaacLkpCoorI.LDU_No
-        LookupOut.RefWk      :=  PiaacLkpCoorI.RefWk
-        LookupOut.Sample     :=  PiaacLkpCoorI.Sample
+        LookupOut.LDUNo     :=  PiaacLkpCoorI.LDUNo
+        LookupOut.SequenceNo      :=  PiaacLkpCoorI.SequenceNo
         LookupOut.Address    :=  PiaacLkpCoorI.Address
         LookupOut.Intvwrno   :=  PiaacLkpCoorI.Intvwrno
         LookupOut.TeamId     :=  PiaacLkpCoorI.TeamId
-        LookupOut.Bookid_ppc :=  PiaacLkpCoorI.Bookid_ppc
-        LookupOut.Bookid_pp1 :=  PiaacLkpCoorI.Bookid_pp1
-        LookupOut.Bookid_pp2 :=  PiaacLkpCoorI.Bookid_pp2
-        LookupOut.Bookid_prc :=  PiaacLkpCoorI.Bookid_prc
         LookupOut.WRITE
         TempLkp.WRITE
         PiaacLkpCoorI.READNEXT
   ENDWHILE
   PiaacLkpCoorI.CLOSE
   LookupOut.CLOSE
-  Rsult1 := RUN('COPYFILE C:\CSO\PIAAC\Pilot\reports\PiaacLookup.csv C:\CSO\PIAAC\Pilot\reports\PiaacLookup'+date1+'.csv')
-  Rsult1 := RUN('DELETEFILE C:\CSO\PIAAC\Pilot\reports\PiaacLookup.csv')
+  Rsult1 := RUN('COPYFILE C:\CSO\PIAAC\Pilot2022\reports\PiaacLookup.csv C:\CSO\PIAAC\Pilot2022\reports\PiaacLookup'+date1+'.csv')
+  Rsult1 := RUN('DELETEFILE C:\CSO\PIAAC\Pilot2022\reports\PiaacLookup.csv')
 ENDPROCEDURE
 
 PROCEDURE FillComp {Used to fill Completed cases table}
   TempComplete.INITRECORD
   TempComplete.RefWk    := PAdmin.MainAdmin.RefWk
   TempComplete.BlockNo  := PAdmin.MainAdmin.BlockNo
-  TempComplete.Ldu_No   := PAdmin.MainAdmin.LduNo
+  TempComplete.LduNo   := PAdmin.MainAdmin.LduNo
   TempComplete.IntvwrNo := PAdmin.MainAdmin.IntvwrNo
   TempComplete.TeamID   := Piaac.mAINdETAILS.tEAMid
   TempComplete.PersID   := Piaac.HHComponent.PersID
@@ -702,7 +691,7 @@ PROCEDURE FillInComp {Used to fill Completed cases table}
   TempInComplete.INITRECORD
   TempInComplete.RefWk    := PAdmin.MainAdmin.RefWk
   TempInComplete.BlockNo  := PAdmin.MainAdmin.BlockNo
-  TempInComplete.Ldu_No   := PAdmin.MainAdmin.LduNo
+  TempInComplete.LduNo   := PAdmin.MainAdmin.LduNo
   TempInComplete.IntvwrNo := PAdmin.MainAdmin.IntvwrNo
   TempInComplete.TeamID   := Piaac.mAINdETAILS.tEAMid
   TempInComplete.PersID   := Piaac.HHComponent.PersID
@@ -782,7 +771,7 @@ DIALOGBOX DispData "Case details for Interview"
     POSITION   = (200, 75)
     STATUS     = 'Block Number'
     EDIT       = No
-  CONTROL Ldu_No
+  CONTROL LduNo
     LABEL      = ('LDU Number: ', 250, 75)
     POSITION   = (360, 75)
     STATUS     = 'LDU Number'
@@ -841,7 +830,7 @@ DIALOGBOX DispData "Case details for Interview"
 
 PROCEDURE PopVisitDetails
   PAdmin.OPEN
-  PAdmin.GET(TempTable.BlockNo, TempTable.Ldu_No)
+  PAdmin.GET(TempTable.BlockNo, TempTable.LduNo)
   IF (PAdmin.RESULTOK) THEN
      FillTempData
      TempVisit.OPEN
@@ -891,7 +880,7 @@ DIALOGBOX AllCasesDetails "All cases returned  for Team: ^TeamNo"   {File menu -
  FIELDS    {Headings in dialogbox}
     RefWk   "Seq No."
     BlockNo  "Block No."
-    Ldu_No   "Ldu No."
+    LduNo   "Ldu No."
     {TeamID   "CoordinatorNo" }
     Intvwrno "Int No"
     PersId   "PersonId"
@@ -997,7 +986,7 @@ DIALOGBOX OpenComplete "Returned Completed Cases (Screener Finalised AND Piaac c
   FIELDS    {Headings in dialogbox}
     RefWk   "Seq No."
     BlockNo  "Block No."
-    Ldu_No   "Ldu No."
+    LduNo   "Ldu No."
     {TeamID   "Coordinator No." }
     IntvwrNo "Int No."
     PersID   "PersID"
@@ -1038,7 +1027,7 @@ DIALOGBOX OpenInComp "Returned InCompletes (Screener not Finalised OR Piaac not 
   FIELDS    {Headings in dialogbox}
     RefWk   "Seq No."
     BlockNo  "Block No."
-    Ldu_No   "Ldu No."
+    LduNo   "Ldu No."
     {TeamID   "Coordinator No."   }
     IntvwrNo "Int No."
     PersID   "PersID"
@@ -1078,7 +1067,7 @@ DIALOGBOX ShowLkp "Lookup file By Block for Team: ^TeamNo"    {Used at File, Scr
   SEARCH = YES
   FIELDS    {Headings in dialogbox}
     BlockNo "Block No."
-    Ldu_No "Ldu No."
+    LduNo "Ldu No."
     RefWk "Sequence"
     Sample "Sample"
     Address "Address"
@@ -1106,47 +1095,47 @@ ENDPROCEDURE
 {1.7 open CSO Home Page}
 {On Homepage close check for Zip. IF THERE - Unzip, Decryt and append the data}
 PROCEDURE AppendData
-  IF FILEEXISTS('c:\cso\piaac\Pilot\datatransfer\download\PIAACCOordData.zipenc') then
+  IF FILEEXISTS('c:\cso\piaac\Pilot2022\datatransfer\download\PIAACCOordData.zipenc') then
      Display ('About to add new data to your Database ', WAIT)
      StopAppend := 'N'
-     Rsult6 := RUN('C:\CSO\File_Converter\dist\FileConverter.bat /u "C:\CSO\PIAAC\Pilot\DataTransfer\Download\PIAACCOordData.zip" "C:\CSO\PIAAC\Pilot\DataTransfer\Import"', WAIT)
-     IF NOT (FILEEXISTS('C:\CSO\PIAAC\Pilot\DataTransfer\Import\*.*enc')) THEN
+     Rsult6 := RUN('C:\CSO\File_Converter\dist\FileConverter.bat /u "C:\CSO\PIAAC\Pilot2022\DataTransfer\Download\PIAACCOordData.zip" "C:\CSO\PIAAC\Pilot2022\DataTransfer\Import"', WAIT)
+     IF NOT (FILEEXISTS('C:\CSO\PIAAC\Pilot2022\DataTransfer\Import\*.*enc')) THEN
         Display ('Unzipping the data has failed ', WAIT)
         StopAppend :='Y'
      ELSE
-         Rsult7 := RUN('C:\CSO\File_Converter\dist\FileConverter.bat /d "C:\CSO\PIAAC\Pilot\DataTransfer\Import"', WAIT)
-         IF NOT (FILEEXISTS('C:\CSO\PIAAC\Pilot\DataTransfer\Import\*.*')) THEN
+         Rsult7 := RUN('C:\CSO\File_Converter\dist\FileConverter.bat /d "C:\CSO\PIAAC\Pilot2022\DataTransfer\Import"', WAIT)
+         IF NOT (FILEEXISTS('C:\CSO\PIAAC\Pilot2022\DataTransfer\Import\*.*')) THEN
             Display ('Decrypting the data has failed', WAIT)
             StopAppend := 'Y'
          ENDIF
-         IF (FILEEXISTS('C:\CSO\piaac\Pilot\DataTransfer\Import\Team*.csv')) THEN
-            Rsult8 := RUN('COPYFILE "C:\CSO\piaac\Pilot\DataTransfer\Import\Team*.csv" "C:\CSO\piaac\Pilot\intdatalogs"', WAIT)
+         IF (FILEEXISTS('C:\CSO\piaac\Pilot2022\DataTransfer\Import\Team*.csv')) THEN
+            Rsult8 := RUN('COPYFILE "C:\CSO\piaac\Pilot2022\DataTransfer\Import\Team*.csv" "C:\CSO\piaac\Pilot2022\intdatalogs"', WAIT)
             IF (Rsult8 <> 0) THEN
                Display ('Copy the Log file has failed', WAIT)
                StopAppend := 'Y'
             ENDIF
-         ELSEIF (FILEEXISTS('C:\CSO\piaac\Pilot\DataTransfer\Import\Team*.xlsx')) THEN
-                Rsult9 := RUN('COPYFILE "C:\CSO\piaac\Pilot\DataTransfer\Import\Team*.xlsx" "C:\CSO\piaac\Pilot\Validations"', WAIT)
+         ELSEIF (FILEEXISTS('C:\CSO\piaac\Pilot2022\DataTransfer\Import\Team*.xlsx')) THEN
+                Rsult9 := RUN('COPYFILE "C:\CSO\piaac\Pilot2022\DataTransfer\Import\Team*.xlsx" "C:\CSO\piaac\Pilot2022\Validations"', WAIT)
                 IF (Rsult9 <> 0) THEN
                    Display ('Copy the Log file has failed', WAIT)
                    StopAppend := 'Y'
                 ENDIF
-             ELSEIF (FILEEXISTS('C:\CSO\piaac\Pilot\DataTransfer\Import\PiaacPilotscr.bdb')) THEN
-                    Rsult10 := CALL('C:\CSO\PIAAC\Pilot\AppendScr')
+             ELSEIF (FILEEXISTS('C:\CSO\piaac\Pilot2022\DataTransfer\Import\PiaacPilotscr.bdb')) THEN
+                    Rsult10 := CALL('C:\CSO\PIAAC\Pilot2022\AppendScr')
                     IF (Rsult10 <> 0) THEN
                        Display ('Appending Screener Data has failed', WAIT)
                        StopAppend := 'Y'
                     ENDIF
-                 ELSEIF (FILEEXISTS('C:\CSO\piaac\Pilot\DataTransfer\Import\PiaacPilotadmin.bdb')) THEN
-                        Rsult11 := CALL('C:\CSO\PIAAC\Pilot\AppendAdmin')
+                 ELSEIF (FILEEXISTS('C:\CSO\piaac\Pilot2022\DataTransfer\Import\PiaacPilotadmin.bdb')) THEN
+                        Rsult11 := CALL('C:\CSO\PIAAC\Pilot2022\AppendAdmin')
                         IF (Rsult11 <> 0) THEN
                            Display ('Appending Administrative Data has failed', WAIT)
                            StopAppend := 'Y'
                         ENDIF
                  ENDIF
                  IF StopAppend = 'N' then
-                    Rsult12 := RUN('deletefile "c:\cso\piaac\Pilot\datatransfer\import\*.*"',wait)
-                    Rsult13 := RUN('deletefile "C:\CSO\PIAAC\Pilot\DataTransfer\Download\PIAACCOordData.zip"',wait)
+                    Rsult12 := RUN('deletefile "c:\cso\piaac\Pilot2022\datatransfer\import\*.*"',wait)
+                    Rsult13 := RUN('deletefile "C:\CSO\PIAAC\Pilot2022\DataTransfer\Download\PIAACCOordData.zip"',wait)
                     Display ('New Data has been added to your Database. Check transfer log for results', WAIT)
                  ELSE
                     Display ('Job Failure while try to add data to the Database. Contact CSO', WAIT)
@@ -1170,7 +1159,7 @@ PROCEDURE HomePageProc
     IF FILEEXISTS('C:\Documents and Settings\All Users\Desktop\DataTransfer\*.*') then
        Rsult1 := RUN('COPYFILE "C:\Documents and Settings\All Users\Desktop\DataTransfer\*.*" "C:\CSO\piaac\Archive"', WAIT)
        Rsult2 := RUN('C:\CSO\File_Converter\dist\FileConverter.bat /e "C:\Documents and Settings\All Users\Desktop\DataTransfer"', WAIT)
-       Rsult3 := RUN('C:\CSO\File_Converter\dist\FileConverter.bat /z "C:\Documents and Settings\All Users\Desktop\DataTransfer" "C:\CSO\piaac\Pilot\DataTransfer\Upload\PiaacHQFiles.zip"', WAIT)
+       Rsult3 := RUN('C:\CSO\File_Converter\dist\FileConverter.bat /z "C:\Documents and Settings\All Users\Desktop\DataTransfer" "C:\CSO\piaac\Pilot2022\DataTransfer\Upload\PiaacHQFiles.zip"', WAIT)
        Rsult4 := RUN('COPYFILE "C:\CSO\DataTransfer\PiaacHQFiles.zip" "C:\CSO\piaac\Archive"', WAIT)
     endif
     IF (Rsult1 <> 0) OR (Rsult2 <> 0) OR (Rsult3 <> 0) OR (Rsult4 <> 0) THEN
@@ -1202,7 +1191,7 @@ PROCEDURE FillRepData
 ENDPROCEDURE
 
 PROCEDURE OpenInfoSumm
-      Reslt:= RUN('C:\CSO\PIAAC\Pilot\Reports\InformationSummary'+date1+'.csv')
+      Reslt:= RUN('C:\CSO\PIAAC\Pilot2022\Reports\InformationSummary'+date1+'.csv')
 ENDPROCEDURE
 
 DIALOGBOX  ViewRpt "Click Yes if you would like to open the Report "
@@ -1222,11 +1211,11 @@ PROCEDURE XlRpt
   ExcelReport.OPEN
   FOR Count := 1 TO TempTable.FORMCOUNT DO
       TempTable.READNEXT
-      ExcelReport.SequenceNo := str(Temptable.RefWk)
+      ExcelReport.SeqNo := str(Temptable.RefWk)
       ExcelReport.CoordinatorNo := TempTable.TeamID
       ExcelReport.InterviewerNo := TempTable.Intvwrno
       ExcelReport.BlockNo    := TempTable.BlockNo
-      ExcelReport.LduNo     := TempTable.Ldu_No
+      ExcelReport.LduNo     := TempTable.LduNo
       ExcelReport.PersID    := TempTable.PersID
       ExcelReport.NoPersons :=   TempTable.NoPers
       ExcelReport.PersonChosen :=   TempTable.PersonChosen
@@ -1258,14 +1247,14 @@ PROCEDURE XlRpt
       ExcelReport.Write
   ENDDO
   ExcelReport.close
-  Rsult1 := RUN('COPYFILE C:\CSO\PIAAC\Pilot\Reports\InformationSummary.csv C:\CSO\PIAAC\Pilot\Reports\InformationSummary'+date1+'.csv')
-  Rsult1 := RUN('DELETEFILE C:\CSO\PIAAC\Pilot\Reports\InformationSummary.csv')
+  Rsult1 := RUN('COPYFILE C:\CSO\PIAAC\Pilot2022\Reports\InformationSummary.csv C:\CSO\PIAAC\Pilot2022\Reports\InformationSummary'+date1+'.csv')
+  Rsult1 := RUN('DELETEFILE C:\CSO\PIAAC\Pilot2022\Reports\InformationSummary.csv')
   ViewRpt
 ENDPROCEDURE
 
 {2.3 - Status Dispostion Report}
 PROCEDURE OpenAlloc
-      Reslt:= RUN('C:\CSO\PIAAC\Pilot\Reports\CaseDispositions'+date1+'.csv')
+      Reslt:= RUN('C:\CSO\PIAAC\Pilot2022\Reports\CaseDispositions'+date1+'.csv')
 ENDPROCEDURE
 
 DIALOGBOX  ViewAllocRpt "Click Yes if you would like to open the Report "
@@ -1285,11 +1274,11 @@ PROCEDURE CallWklyRpt
   WklyAllocOut.OPEN
   FOR Count := 1 TO TempTable.FORMCOUNT DO
       TempTable.READNEXT
-      WklyAllocOut.SequenceNo    := str(Temptable.RefWk)
+      WklyAllocOut.SeqNo    := str(Temptable.RefWk)
       WklyAllocOut.CoordinatorNo := TempTable.TeamID
       WklyAllocOut.InterviewerNo := TempTable.Intvwrno
       WklyAllocOut.BlockNo       := TempTable.BlockNo
-      WklyAllocOut.LduNo         := TempTable.Ldu_No
+      WklyAllocOut.LduNo         := TempTable.LduNo
       WklyAllocOut.LastVisit     := Temptable.LastVis
       WklyAllocOut.LastDay       := TempTable.LastDay
       WklyAllocOut.LastDate      := datetostr(TempTable.LastDat)
@@ -1305,8 +1294,8 @@ PROCEDURE CallWklyRpt
       WklyAllocOut.Write
   ENDDO
   WklyAllocOut.close
-  Rsult1 := RUN('COPYFILE C:\CSO\PIAAC\Pilot\Reports\CaseDispositions.csv C:\CSO\PIAAC\Pilot\Reports\CaseDispositions'+date1+'.csv')
-  Rsult1 := RUN('DELETEFILE C:\CSO\PIAAC\Pilot\Reports\CaseDispositions.csv')
+  Rsult1 := RUN('COPYFILE C:\CSO\PIAAC\Pilot2022\Reports\CaseDispositions.csv C:\CSO\PIAAC\Pilot2022\Reports\CaseDispositions'+date1+'.csv')
+  Rsult1 := RUN('DELETEFILE C:\CSO\PIAAC\Pilot2022\Reports\CaseDispositions.csv')
   ViewAllocRpt
 ENDPROCEDURE
 
@@ -1315,7 +1304,7 @@ PROCEDURE CrWkRport
   WklySumOut.OPEN
       IF (TeamNo = PAdmin.MainAdmin.TeamID) THEN
         WklySumOut.BlockNo      := FORMAT(str(Prevblock),4,LEFT, ' ')
-        WklySumOut.SequenceNo   := FORMAT(str(PrevRefWk),2,right,'0')
+        WklySumOut.SeqNo   := FORMAT(str(PrevRefWk),2,right,'0')
         WklySumOut.Complete     := FORMAT(STR(PrevCompl),2,right,'0')
         WklySumOut.Refusals     := FORMAT(STR(PrevRefus),2,right,'0')
         WklySumOut.Ineligible   := FORMAT(STR(PrevInelgs),2,right,'0')
@@ -1402,7 +1391,7 @@ PROCEDURE IntStat
 ENDPROCEDURE
 
 PROCEDURE OpenSumm
-      Reslt:= RUN('C:\CSO\PIAAC\Pilot\Reports\SummaryStatus'+date1+'.CSV')
+      Reslt:= RUN('C:\CSO\PIAAC\Pilot2022\Reports\SummaryStatus'+date1+'.CSV')
 ENDPROCEDURE
 
 DIALOGBOX  ViewSummRpt "Click Yes if you would like to open the Report "
@@ -1447,8 +1436,8 @@ PROCEDURE LaunchWkSum
        Init
      UNTIL (padmin.EOF)
   ENDIF
-  Rsult1 := RUN('COPYFILE C:\CSO\PIAAC\Pilot\Reports\SummaryStatus.CSV C:\CSO\PIAAC\Pilot\Reports\SummaryStatus'+date1+'.CSV')
-  Rsult1 := RUN('DELETEFILE C:\CSO\PIAAC\Pilot\Reports\SummaryStatus.CSV')
+  Rsult1 := RUN('COPYFILE C:\CSO\PIAAC\Pilot2022\Reports\SummaryStatus.CSV C:\CSO\PIAAC\Pilot2022\Reports\SummaryStatus'+date1+'.CSV')
+  Rsult1 := RUN('DELETEFILE C:\CSO\PIAAC\Pilot2022\Reports\SummaryStatus.CSV')
   ViewSummRpt
   PAdmin.close
 ENDPROCEDURE
@@ -1502,7 +1491,7 @@ PROCEDURE InterProc
 ENDPROCEDURE
 
 PROCEDURE GetLkp
-  Rsult1 := RUN('DELETEFILE C:\CSO\PIAAC\Pilot\Lookups\PiaacLkpCoor.bdb')
+  Rsult1 := RUN('DELETEFILE C:\CSO\PIAAC\Pilot2022\Lookups\PiaacLkpCoor.bdb')
   PiaacLkpCoorO.OPEN {Output file of new Coordinator file}
   MainPiaacLkp.OPEN {Main Lookup}
   Display ('Updating the Household Information file for TeamID: '+TeamNo+ '    Please wait...            ')
@@ -1535,12 +1524,12 @@ PROCEDURE CoorDets
 ENDPROCEDURE
 
 PROCEDURE GetTeamNo
-  IF FileExists('C:\CSO\PIAAC\Pilot\Lookups\TeamIDNumber.bdb') THEN
+  IF FileExists('C:\CSO\PIAAC\Pilot2022\Lookups\TeamIDNumber.bdb') THEN
      CoorNumberI.OPEN
      CoorNumberI.READNEXT
      IF (CoorNumberI.RESULTOK) AND (CoorNumberI.TeamID <> EMPTY) THEN
         TeamNo := CoorNumberI.TeamID
-        IF FileExists('C:\CSO\PIAAC\Pilot\Lookups\PiaacLkpCoor.bdb') THEN
+        IF FileExists('C:\CSO\PIAAC\Pilot2022\Lookups\PiaacLkpCoor.bdb') THEN
            PiaacLkpCoorI.OPEN                   {Check that LOOKUP MATCHES current inerviewer Number}
            PiaacLkpCoorI.ReadNEXT
            PiaacLkpCoorI.CLOSE
@@ -1582,11 +1571,6 @@ PROCEDURE UpdateTeamNo
   ENDIF
 ENDPROCEDURE
 
-
-
-
-
-
 PROCEDURE DatTime
     SDate := DateToStr(SysDate)
     Day1  := SUBSTRING(SDate,1,2)
@@ -1600,13 +1584,10 @@ PROCEDURE DatTime
     Time1 := Hr1 + Min1 + Sec1
 ENDPROCEDURE
 
-
 {5.1 - Application Information}
 
-
-
 PROCEDURE OpMan
-      Reslt:= RUN('C:\CSO\PIAAC\Pilot\CoordinatorAppUserManual.docx')
+      Reslt:= RUN('C:\CSO\PIAAC\Pilot2022\CoordinatorAppUserManual.docx')
 ENDPROCEDURE
 
 {5.2 - Version}
@@ -1622,9 +1603,6 @@ DIALOGBOX CSO "Central Statistics Office"
     VALUE = OK
 
 {Brings Excel to the front} {Added 12/08/11 by CMD}
-
-
-
 {---------------------------------------------------------------------------------------------------}
 
 MANIPULATE
@@ -1677,7 +1655,7 @@ MANIPULATE
     ENDIF
    {'View Reports' Option - opens report folder for user to select which file (.csv to open}
     IF Program = 'RepFolder' THEN
-       Name := SELECTFILE('Select the Report you want to open','C:\CSO\PIAAC\Pilot\Reports\','csv files (*.csv)|*.csv', fixed)
+       Name := SELECTFILE('Select the Report you want to open','C:\CSO\PIAAC\Pilot2022\Reports\','csv files (*.csv)|*.csv', fixed)
        IF Name <> EMPTY THEN
           AnyCSVFile.OPEN(Name)
           OpenRep
@@ -1685,7 +1663,7 @@ MANIPULATE
        Name:= EMPTY
     ENDIF
     IF Program = 'TransLog' THEN
-       Name := SELECTFILE('Select the Report you want to open','C:\CSO\PIAAC\Pilot\intdatalogs\','csv files (*.csv)|*.csv', fixed)
+       Name := SELECTFILE('Select the Report you want to open','C:\CSO\PIAAC\Pilot2022\intdatalogs\','csv files (*.csv)|*.csv', fixed)
        IF Name <> EMPTY THEN
           AnyCSVFile.OPEN(Name)
           OpenRep
@@ -1693,7 +1671,7 @@ MANIPULATE
        Name:= EMPTY
     ENDIF
     IF Program = 'AdminDocs' THEN
-       Name := SELECTFILE('Select the Admin document you want to open','C:\CSO\PIAAC\Pilot\Validations\','xlsx files (*.xlsx)|*.*', fixed)
+       Name := SELECTFILE('Select the Admin document you want to open','C:\CSO\PIAAC\Pilot2022\Validations\','xlsx files (*.xlsx)|*.*', fixed)
        IF Name <> EMPTY THEN
           AnyCSVFile.OPEN(Name)
           OpenRep
